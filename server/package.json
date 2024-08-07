@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "developerRalsei",
-  "license": "ISC",
+  "license": "MIT",
   "description": "FullStack, MERN Stack Blog Application",
   "dependencies": {
     "dotenv": "^16.4.5",

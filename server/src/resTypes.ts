@@ -7,5 +7,5 @@ export type blogRes = {
     }> | {
         title: string,
         content: string
-    }
+    } | any
 }
