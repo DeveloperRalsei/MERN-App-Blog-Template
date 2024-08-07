@@ -1,0 +1,21 @@
+### List all blogs
+GET http://localhost:3000/api/blogs
+### List just one blog
+GET http://localhost:3000/api/blogs/66b35eb98029247a82ccaf58/
+### Listing a blog doesnt exist
+GET http://localhost:3000/api/blogs/66b35eb98029247a82ccaf51
+### Creating blog
+POST http://localhost:3000/api/blogs
+Content-Type: application/json
+
+{
+    "title": "My second blog",
+    "content": "Whoooo hoo"
+}
+### Creating blog without a paramtter and getting an error
+POST http://localhost:3000/api/blogs
+Content-Type: application/json
+
+{
+    "title": "My second blog"
+}
