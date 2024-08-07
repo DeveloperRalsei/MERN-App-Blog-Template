@@ -1,33 +1,26 @@
 import { Response, Request, Router } from "express"
 import blogModel from "../models/blogModel"
+import { blogControllers } from "../controllers/blogController"
 const router = Router()
 
-router.get("/", async (req: Request, res: Response) => {
-
-    try {
-        const blogs = await blogModel.find()
-        res.status(200).json({
-            message: "blogs loaded",
-            success: true,
-            data: blogs
-        })
-    } catch (error) {
-        res.status(404).json({
-            message: "Something went wrong while trying to load blogs: " + error,
-            success: false
-        })
-    }
-})
+router.get("/", blogControllers.getAll)
 
 router.get("/:id", async (req: Request, res: Response) => {
     const id: string = req.params.id
 
     try {
-        const blog = await blogModel.find({
+        const blog: Array<{
+            _id: string,
+            title: string,
+            content: string,
+            createdAt: Date,
+            updatedAt: Date,
+            _v: number
+        }> = await blogModel.find({
             _id: id
         })
 
-        if(!blog){
+        if(blog.length === 0){
             res.status(404).json({
                 message: "Couldn't found any blog",
                 success: false,

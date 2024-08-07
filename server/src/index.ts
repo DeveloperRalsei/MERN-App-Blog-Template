@@ -7,7 +7,7 @@ server.listen(port, () => {
     console.log(`api started at ${port} | http://localhost:${port}`)
 })
 
-const connectionString: string = process.env.MONG_URI || "mongodb://localhost:27017/mernApp"
+const connectionString: string = process.env.MONG_URI as string
 mongoose.connect(connectionString)
     .then(() => {
         console.log("Databse connected")
