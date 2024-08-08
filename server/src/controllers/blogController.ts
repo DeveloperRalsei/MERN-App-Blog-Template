@@ -17,7 +17,7 @@ export const blogControllers = {
             }> = await blogModel.find()
 
             let resInfo: blogRes = {
-                message: "Blogs loaded",
+                message: blogs.length === 0 ? "Couldn't find blogs" : "Blogs loaded",
                 success: true,
                 data: blogs
             }
@@ -149,6 +149,53 @@ export const blogControllers = {
             }
             easyRes(req, res, 404, resInfo)
         }
+    },
+    deleteBlogDELETE: async (req: Request, res: Response) => {
+        const { id } = req.body
+
+        try {
+            const blog = await blogModel.findById(id)
+
+            if (!blog) {
+                const resInfo: blogRes = {
+                    message: "Couldn't find any blog to delete",
+                    success: false,
+                    data: []
+                }
+
+                easyRes(req, res, 404, resInfo)
+                return
+            }
+
+            const deleteResult = await blogModel.deleteOne({ _id: id })
+
+            if (deleteResult) {
+                const resInfo: blogRes = {
+                    message: "Blog deleted successfully",
+                    success: true
+                }
+
+                easyRes(req, res, 200, resInfo)
+            } else {
+                const resInfo: blogRes = {
+                    message: "No blog was deleted",
+                    success: false,
+                    data: []
+                }
+
+                easyRes(req, res, 404, resInfo)
+            }
+        } catch (error) {
+            console.error(error)
+            const resInfo: blogRes = {
+                message: "" + error,
+                success: false,
+                data: []
+            }
+
+            easyRes(req, res, 500, resInfo)
+        }
     }
+
 
 }

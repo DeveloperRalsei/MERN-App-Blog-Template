@@ -10,4 +10,6 @@ router.post("/", blogControllers.newBlogPOST)
 
 router.patch("/", blogControllers.updateBlogPATCH)
 
+router.delete("/", blogControllers.deleteBlogDELETE)
+
 export default router
