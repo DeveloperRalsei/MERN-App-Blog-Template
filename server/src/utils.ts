@@ -11,9 +11,11 @@ export const easyRes = (
         data?: any
     }
 ): Response => {
-    return res.status(statusCode).json({
+    const response:Response = res.status(statusCode).json({
         message: information.message,
         success: information.success,
         data: information.data
     } as blogRes)
+
+    return response
 }

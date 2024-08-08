@@ -8,4 +8,6 @@ router.get("/:id", blogControllers.getByIdGET)
 
 router.post("/", blogControllers.newBlogPOST)
 
+router.patch("/", blogControllers.updateBlogPATCH)
+
 export default router
