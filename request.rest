@@ -1,17 +1,21 @@
 ### List all blogs
 GET http://localhost:3000/api/blogs
+
 ### List just one blog
 GET http://localhost:3000/api/blogs/66b35eb98029247a82ccaf58/
+
 ### Listing a blog doesnt exist
 GET http://localhost:3000/api/blogs/66b35eb98029247a82ccaf51
+
 ### Creating blog
 POST http://localhost:3000/api/blogs
 Content-Type: application/json
 
 {
-    "title": "My second blog",
-    "content": "Whoooo hoo"
+    "title": "test",
+    "content": "test"
 }
+
 ### Creating blog without a paramtter and getting an error
 POST http://localhost:3000/api/blogs
 Content-Type: application/json
@@ -19,3 +23,26 @@ Content-Type: application/json
 {
     "title": "My second blog"
 }
+
+### Update a blog
+PATCH http://localhost:3000/api/blogs
+Content-Type: application/json
+
+{
+    "id": "66b4a74e35ec4675ca82f73c",
+    "title": "Yippii",
+    "content": "new Content"
+}
+
+### delete Blog by Id
+
+DELETE http://localhost:3000/api/blogs/
+Content-Type: application/json
+
+{
+    "id" : "66b4ae76cc6b60d8dd3b3895"
+}
+
+### Hmm
+
+GET http://localhost:3000/hmm
