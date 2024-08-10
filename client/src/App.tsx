@@ -1,7 +1,7 @@
 import { AppShell, Avatar, Burger, Button, Container, DefaultMantineColor, Group, Menu, NavLink, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { HeaderButton } from './components/HeaderButton';
-import { IconBook, IconChevronDown, IconChevronRight, IconDoorEnter, IconDoorExit, IconHome, IconLogin, IconLogin2, IconLogout, IconLogout2, IconMoon, IconSun, IconUserCircle, IconUserFilled } from '@tabler/icons-react';
+import { IconBook, IconChevronDown, IconChevronRight, IconHome, IconLogin2, IconLogout2, IconMoon, IconSun, IconUserCircle, IconUserFilled } from '@tabler/icons-react';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { Outlet, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
@@ -132,6 +132,7 @@ function App() {
       <AppShell.Main>
         <Container size={"md"}>
           <Outlet />
+          {/* {!blogs ? "loading..." : blogs} */}
         </Container>
       </AppShell.Main>
     </AppShell>

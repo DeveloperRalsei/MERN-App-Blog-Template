@@ -2,6 +2,7 @@ import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import { UserManagement } from './pages/UserManagement';
+import Home from './pages/Home';
 
 const router = createBrowserRouter([
    {
@@ -10,7 +11,7 @@ const router = createBrowserRouter([
       children: [
          {
             path: "/",
-            element: <div>test</div>
+            element: <Home/>
          },
          {
             path: "/account/:id",
