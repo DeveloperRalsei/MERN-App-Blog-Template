@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonProps } from '@mantine/core'
+import { Button, ButtonProps, useMantineColorScheme} from '@mantine/core'
 
 interface IButton extends ButtonProps {
   children?: React.ReactNode,
@@ -7,8 +7,9 @@ interface IButton extends ButtonProps {
 }
 
 export const HeaderButton: React.FC<IButton> = ({ children, onClick, ...props }) => {
+  const { colorScheme } = useMantineColorScheme()
   return (
-    <Button variant='light' p={5} {...props} onClick={onClick}>
+    <Button variant={colorScheme === 'dark' ? 'light' : 'filled'} p={5} {...props} onClick={onClick}>
       {children}
     </Button>
   )

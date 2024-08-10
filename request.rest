@@ -40,7 +40,7 @@ DELETE http://localhost:3000/api/blogs/
 Content-Type: application/json
 
 {
-    "id" : "66b4ae76cc6b60d8dd3b3895"
+    "id" : "66b35925a5c8f14230d2124d"
 }
 
 ### Hmm
