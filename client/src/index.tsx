@@ -1,10 +1,13 @@
 import { createRoot } from "react-dom/client";
 import { MantineProvider, createTheme } from "@mantine/core";
 import '@mantine/core/styles.css';
-import PageRenderer from './PageRenderer'
+import PageRenderer from './PageRenderer';
 
 const theme = createTheme({
   primaryColor: "green",
+  fontSizes: {
+    md: "1.2rem"
+  },
   colors: {
     dark: [
       '#C1C2C5',
@@ -24,7 +27,7 @@ const theme = createTheme({
 const root = document.getElementById("root");
 
 createRoot(root!).render(
-  <MantineProvider theme={theme}>
-    <PageRenderer />
+  <MantineProvider theme={theme} defaultColorScheme="dark">
+    <PageRenderer/>
   </MantineProvider>
-)
+);

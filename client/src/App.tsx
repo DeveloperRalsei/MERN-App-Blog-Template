@@ -5,13 +5,15 @@ import { IconBook, IconChevronDown, IconChevronRight, IconHome, IconLogin2, Icon
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { Outlet, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import usePageLoading from './hooks/usePageLoading';
+import LoadingBar from 'react-top-loading-bar';
 
 const navLinks: Array<{
   name: string,
   link: string,
   icon?: React.ReactNode,
   color?: DefaultMantineColor,
-  iconRight?: React.ReactNode
+  iconRight?: React.ReactNode;
 }> = [
     {
       name: "Home",
@@ -24,21 +26,22 @@ const navLinks: Array<{
       link: "/blogs",
       icon: <IconBook />
     }
-  ]
+  ];
 
 
 function App() {
   const [opened, { toggle }] = useDisclosure();
-  const { toggleColorScheme, colorScheme } = useMantineColorScheme()
-  const navigate = useNavigate()
-  const theme = useMantineTheme()
-  const [active, setActive] = useState<number>(0)
+  const { toggleColorScheme, colorScheme } = useMantineColorScheme();
+  const navigate = useNavigate();
+  const theme = useMantineTheme();
+  const [active, setActive] = useState<number>(0);
+  const ref = usePageLoading();
 
   const handleNavLink = (navLink: string, index: number) => {
-    navigate(navLink)
-    setActive(index)
-    toggle()
-  }
+    navigate(navLink);
+    setActive(index);
+    toggle();
+  };
 
   return (
     <AppShell
@@ -46,6 +49,15 @@ function App() {
       navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: true, mobile: !opened } }}
       padding="md"
     >
+      <LoadingBar 
+        ref={ref} 
+        color={theme.primaryColor}
+        height={3}
+        shadowStyle={{color: "red"}}
+        transitionTime={0.5}
+        background='transparent'
+        style={{borderRadius: "0 10px 10px 0"}}
+      />
       <AppShell.Header style={{
         backgroundColor: colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
         boxShadow: "0 10px 30px 0 rgba(0, 0, 0, .1)"
@@ -54,7 +66,7 @@ function App() {
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           <Group justify="space-between" style={{ flex: 1 }}>
             <Group>
-              <MantineLogo size={25} />
+              <MantineLogo size={30} color={theme.primaryColor} />
               <Group ml={20} gap={5} visibleFrom="sm">
                 {navLinks.map((navLink, i) => (
                   <HeaderButton
@@ -72,8 +84,8 @@ function App() {
               <Menu>
                 <Menu.Target>
                   <Button px={0} variant={colorScheme === 'dark' ? 'light' : 'filled'} radius={theme.defaultRadius}>
-                    <Avatar variant='transparent' color='white'/>
-                    <IconChevronDown size={14}/>
+                    <Avatar variant='transparent' color='white' />
+                    <IconChevronDown size={14} />
                   </Button>
                 </Menu.Target>
                 <Menu.Dropdown>
@@ -139,4 +151,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
