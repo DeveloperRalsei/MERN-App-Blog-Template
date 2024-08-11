@@ -29,7 +29,7 @@ const navLinks: Array<{
   ];
 
 
-function App() {
+const App: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
   const { toggleColorScheme, colorScheme } = useMantineColorScheme();
   const navigate = useNavigate();
@@ -49,14 +49,14 @@ function App() {
       navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: true, mobile: !opened } }}
       padding="md"
     >
-      <LoadingBar 
-        ref={ref} 
+      <LoadingBar
+        ref={ref}
         color={theme.primaryColor}
         height={3}
-        shadowStyle={{color: "red"}}
+        shadowStyle={{ color: "red" }}
         transitionTime={0.5}
         background='transparent'
-        style={{borderRadius: "0 10px 10px 0"}}
+        style={{ borderRadius: "0 10px 10px 0" }}
       />
       <AppShell.Header style={{
         backgroundColor: colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
@@ -149,6 +149,6 @@ function App() {
       </AppShell.Main>
     </AppShell>
   );
-}
+};
 
 export default App;
