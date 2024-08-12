@@ -46,3 +46,7 @@ Content-Type: application/json
 ### Hmm
 
 GET http://localhost:3000/hmm
+
+### ssr
+
+GET http://localhost:3000/page

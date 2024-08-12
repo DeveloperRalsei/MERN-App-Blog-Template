@@ -1,6 +1,7 @@
 import { Box, Card, SimpleGrid, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import BlogCard from "../components/BlogCard";
 
 const getBlogs = () => {
   const [blogs, setBlogs] = useState<Array<{
@@ -15,7 +16,7 @@ const getBlogs = () => {
   useEffect(() => {
     const getBlogs = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/blogs");
+        const response = await axios.get("/api/blogs");
 
         const { data }: {
           data: Array<{
@@ -48,7 +49,14 @@ const getBlogs = () => {
 const Page: React.FC = () => {
   const blogs = getBlogs();
   const theme = useMantineTheme();
-  const [searchValue, setSearchValue] = useState<string>("")
+  const [searchValue, setSearchValue] = useState<string>("");
+
+  let filteredBlogs = (!!searchValue ? (
+    blogs.filter(blog => [
+      blog.title,
+      blog.content,
+    ].filter(x => x).join(" ").toLowerCase().includes(searchValue.toLowerCase()))
+  ) : blogs);
 
   return (
     <Box>
@@ -61,12 +69,15 @@ const Page: React.FC = () => {
         mb={20}
       />
 
-      <SimpleGrid cols={{ md: 4, sm: 2 }}>
-        {blogs.map((blog, i) => (
-          <Card shadow="md" p={"md"}>
-            <Text>{blog.title}</Text>
-            <Text>{blog.content}</Text>
-          </Card>
+      <SimpleGrid cols={{ md: 2, sm: 1 }}>
+        {filteredBlogs.map((blog, i) => (
+          <BlogCard
+            key={i}
+            id={blog._id}
+            title={blog.title}
+            content={blog.content}
+            
+          />
         ))}
       </SimpleGrid>
     </Box>
