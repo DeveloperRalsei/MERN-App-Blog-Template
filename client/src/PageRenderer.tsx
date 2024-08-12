@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import { UserManagement } from './pages/UserManagement';
 import Home from './pages/Home';
+import Blogs from './pages/Blogs';
 
 const router = createBrowserRouter([
    {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
          {
             path: "/",
             element: <Home/>
+         },
+         {
+            path: "/blogs",
+            element: <Blogs/>
          },
          {
             path: "/account/:id",

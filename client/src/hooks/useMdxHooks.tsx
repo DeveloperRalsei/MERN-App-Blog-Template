@@ -1,4 +1,4 @@
-import { Anchor, Divider, Image, SimpleGrid, Space, Title, useMantineTheme, useMantineColorScheme, Code } from "@mantine/core";
+import { Anchor, Divider, Image, SimpleGrid, Space, Title, useMantineTheme, useMantineColorScheme, Code, List } from "@mantine/core";
 
 export const useMdxComps = () => {
   const theme = useMantineTheme();
@@ -8,7 +8,6 @@ export const useMdxComps = () => {
     h1: (props: any) => (
       <Title
         order={1}
-        mb={15}
         c={theme.primaryColor}
         {...props}
       />
@@ -16,7 +15,6 @@ export const useMdxComps = () => {
     h2: (props: any) => (
       <Title
         order={2}
-        mb={15}
         c={theme.primaryColor}
         {...props}
       />
@@ -24,7 +22,6 @@ export const useMdxComps = () => {
     h3: (props: any) => (
       <Title
         order={3}
-        mb={15}
         c={theme.primaryColor}
         {...props}
       />
@@ -34,6 +31,8 @@ export const useMdxComps = () => {
     Space: (props: any) => <Space {...props} />,
     img: (props: any) => <Image {...props} width="100%" />,
     p: (props: any) => <p style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }} {...props} />,
+    ul: (props: any) => <List {...props}/>,
+    li: (props: any) => <List.Item {...props}/>,
     code: (props: any) => <Code style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }} {...props} />,
     SimpleGrid: (props: any) => <SimpleGrid cols={{ md: 2, sm: 1 }} {...props} />,
     Divider: (props: any) => <Divider {...props} />,

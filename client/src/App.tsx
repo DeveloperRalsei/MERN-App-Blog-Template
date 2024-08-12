@@ -1,4 +1,4 @@
-import { AppShell, Avatar, Burger, Button, Container, DefaultMantineColor, Group, Menu, NavLink, useMantineColorScheme, useMantineTheme } from '@mantine/core';
+import { AppShell, Avatar, Box, Burger, Button, Container, DefaultMantineColor, Group, Menu, NavLink, Progress, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { HeaderButton } from './components/HeaderButton';
 import { IconBook, IconChevronDown, IconChevronRight, IconHome, IconLogin2, IconLogout2, IconMoon, IconSun, IconUserCircle, IconUserFilled } from '@tabler/icons-react';
@@ -52,11 +52,9 @@ const App: React.FC = () => {
       <LoadingBar
         ref={ref}
         color={theme.primaryColor}
-        height={3}
-        shadowStyle={{ color: "red" }}
-        transitionTime={0.5}
-        background='transparent'
+        height={5}
         style={{ borderRadius: "0 10px 10px 0" }}
+        waitingTime={100}
       />
       <AppShell.Header style={{
         backgroundColor: colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
@@ -66,13 +64,14 @@ const App: React.FC = () => {
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           <Group justify="space-between" style={{ flex: 1 }}>
             <Group>
-              <MantineLogo size={30} color={theme.primaryColor} />
+              <MantineLogo size={25} color={theme.primaryColor} />
               <Group ml={20} gap={5} visibleFrom="sm">
                 {navLinks.map((navLink, i) => (
                   <HeaderButton
                     key={i}
                     leftSection={navLink.icon}
                     color={navLink.color}
+                    variant='light'
                     onClick={() => navigate(navLink.link)}
                   >
                     {navLink.name}
@@ -83,7 +82,7 @@ const App: React.FC = () => {
             <Group>
               <Menu>
                 <Menu.Target>
-                  <Button px={0} variant={colorScheme === 'dark' ? 'light' : 'filled'} radius={theme.defaultRadius}>
+                  <Button visibleFrom='sm' px={0} variant={colorScheme === 'dark' ? 'light' : 'filled'} radius={theme.defaultRadius}>
                     <Avatar variant='transparent' color='white' />
                     <IconChevronDown size={14} />
                   </Button>
@@ -126,25 +125,40 @@ const App: React.FC = () => {
       </AppShell.Header>
 
       <AppShell.Navbar>
-        {navLinks.map((navLink, index) => (
+        <AppShell.Section>
+          {navLinks.map((navLink, index) => (
+            <NavLink
+              key={index}
+              variant={colorScheme === 'dark' ? 'light' : 'filled'}
+              label={navLink.name}
+              color={navLink.color}
+              active={index === active}
+              rightSection={<IconChevronRight size={14} />}
+              leftSection={navLink.icon}
+              onClick={() => handleNavLink(navLink.link, index)}
+              mb={3}
+            />
+          ))}
           <NavLink
-            key={index}
             variant={colorScheme === 'dark' ? 'light' : 'filled'}
-            label={navLink.name}
-            color={navLink.color}
-            active={index === active}
+            label={"Account"}
+            color={"teal"}
             rightSection={<IconChevronRight size={14} />}
-            leftSection={navLink.icon}
-            onClick={() => handleNavLink(navLink.link, index)}
+            leftSection={<Avatar variant='transparent' />}
             mb={3}
-          />
-        ))}
+          >
+
+            <NavLink
+              label="Profile"
+              leftSection={<IconUserCircle />}
+            />
+          </NavLink>
+        </AppShell.Section>
       </AppShell.Navbar>
 
       <AppShell.Main>
         <Container size={"md"}>
           <Outlet />
-          {/* {!blogs ? "loading..." : blogs} */}
         </Container>
       </AppShell.Main>
     </AppShell>

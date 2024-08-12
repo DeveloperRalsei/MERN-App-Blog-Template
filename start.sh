@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$1" == "--dev" ]; then
+if [ "$1" == "dev" ]; then
     cd server/ && npm run dev &
     cd client/ && npm run dev
 else
