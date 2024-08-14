@@ -1,42 +1,25 @@
-import { Box, Card, SimpleGrid, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
-import axios from "axios";
+import { Box, Card, Image, SimpleGrid, Skeleton, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
+import blogRoutes from "../routes/blogRoutes";
+import { Blog } from "../types";
 
 const getBlogs = () => {
-  const [blogs, setBlogs] = useState<Array<{
-    _id: any,
-    title: string,
-    content: string,
-    createdAt: Date,
-    updatedAt: Date,
-    __v: number;
-  }>>([]);
+  const [blogs, setBlogs] = useState<Array<Blog>>([]);
 
   useEffect(() => {
-    const getBlogs = async () => {
-      try {
-        const response = await axios.get("/api/blogs");
+    blogRoutes.getBlogs()
+      .then((response) => {
 
-        const { data }: {
-          data: Array<{
-            _id: any,
-            title: string,
-            content: string,
-            createdAt: Date,
-            updatedAt: Date,
-            __v: number;
-          }>;
-        } = response.data;
+        setBlogs(response.data.data || []);
+        console.log(response);
 
-        setBlogs(data);
-      } catch (error) {
-        console.error(error);
-        setBlogs([]);
-      }
-    };
+      }).catch((err) => {
 
-    getBlogs();
+        console.error(err);
+
+      });
+
   }, []);
 
   if (!blogs) {
@@ -69,17 +52,28 @@ const Page: React.FC = () => {
         mb={20}
       />
 
-      <SimpleGrid cols={{ md: 2, sm: 1 }}>
-        {filteredBlogs.map((blog, i) => (
-          <BlogCard
-            key={i}
-            id={blog._id}
-            title={blog.title}
-            content={blog.content}
-            
-          />
-        ))}
-      </SimpleGrid>
+      {filteredBlogs.length > 0 ? (
+        <SimpleGrid cols={{ md: 2, sm: 1 }} >
+          {filteredBlogs.map((blog, i) => (
+            <BlogCard
+              key={i}
+              id={blog._id}
+              title={blog.title}
+              content={blog.content}
+              
+              image={blog.image ? (
+                <Image src={"/images/personal_pp.png"} alt={`blog-image-${blog._id}`} w={"100%"} mah={175} bgp={"center"} />
+              ): (
+                <Skeleton w={"100%"} h={175}/>
+              )}
+            />
+          ))}
+        </SimpleGrid>
+      ) : (
+        <Text c={theme.primaryColor} ta={"center"}>
+          Couldn't find any blogs
+        </Text>
+      )}
     </Box>
   );
 };

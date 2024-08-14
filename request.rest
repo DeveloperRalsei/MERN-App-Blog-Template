@@ -49,4 +49,4 @@ GET http://localhost:3000/hmm
 
 ### ssr
 
-GET http://localhost:3000/page
+GET http://localhost:3000/
