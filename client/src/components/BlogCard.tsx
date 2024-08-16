@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ObjectId } from 'mongoose';
 
-interface IProps{
+interface IProps {
   id: ObjectId | any,
   title: string,
   content: string,
@@ -12,8 +12,8 @@ interface IProps{
 
 const BlogCard: React.FC<IProps> = ({ id, title, content, image }) => {
   const theme = useMantineTheme();
-  const {colorScheme} = useMantineColorScheme()
-  console.log(image)
+  const { colorScheme } = useMantineColorScheme();
+  console.log(image);
 
   return (
     <Card
@@ -22,15 +22,24 @@ const BlogCard: React.FC<IProps> = ({ id, title, content, image }) => {
       w={"100%"}
       p={"md"}
       radius={theme.defaultRadius}
-      component={Link}
-      to={id}
       maw={500}
     >
       <Stack>
         {image ? (
-          <Image src={image} w={"100%"} alt={`image-${title}-${id}`} />
+          <Image
+            src={image}
+            w={"100%"}
+            component={Link}
+            to={id}
+          />
         ) : (
-          <Group  h={175} w={"100%"} align='center' justify='center' bg={colorScheme === 'dark' ? 'dark' : theme.colors.dark[0]}>
+          <Group
+            h={175}
+            w={"100%"}
+            align='center'
+            justify='center'
+            bg={colorScheme === 'dark' ? 'dark' : theme.colors.dark[0]}
+          >
             <Text fz={23}>No Image</Text>
           </Group>
         )}

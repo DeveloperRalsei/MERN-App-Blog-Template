@@ -1,7 +1,7 @@
 import { AppShell, Avatar, Burger, Button, Container, DefaultMantineColor, Divider, Group, Menu, NavLink, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { HeaderButton } from './components/HeaderButton';
-import { IconBook, IconBook2, IconChevronDown, IconChevronRight, IconHome, IconLogin2, IconLogout2, IconMoon, IconSun, IconUserCircle, IconUserFilled } from '@tabler/icons-react';
+import { IconBook, IconBook2, IconChevronDown, IconChevronRight, IconHome, IconLogin2, IconLogout2, IconMoon, IconSun, IconUser, IconUserCircle, IconUserFilled } from '@tabler/icons-react';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { Outlet, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
@@ -28,6 +28,32 @@ const navLinks: Array<{
     }
   ];
 
+const AccountLinks: Array<{
+  label: string,
+  link: string,
+  icon: React.ReactNode
+}> = [
+  {
+    label: "Profile",
+    icon: <IconUserCircle />,
+    link: "/account/test"
+  },
+  {
+    label: "Log Out",
+    icon: <IconLogout2/>,
+    link:'/logout',
+  },
+  {
+    label: "Log In",
+    icon: <IconLogin2/>,
+    link: "Log In"
+  },
+  {
+    label: "New Account",
+    icon: <IconUserFilled/>,
+    link: "/register"
+  }
+]
 
 const App: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -89,34 +115,22 @@ const App: React.FC = () => {
                 </Menu.Target>
                 <Menu.Dropdown>
                   <Menu.Label>Account</Menu.Label>
-                  <Menu.Item
-                    leftSection={<IconUserCircle />}
-                    onClick={() => navigate("/account/:id")}
-                  >
-                    Profile
-                  </Menu.Item>
-                  <Menu.Item
-                    leftSection={<IconLogout2 />}
-                    onClick={() => navigate('/logout')}
-                  >
-                    Log Out
-                  </Menu.Item>
-                  <Menu.Item
-                    leftSection={<IconLogin2 />}
-                    onClick={() => navigate('/login')}
-                  >
-                    Log In
-                  </Menu.Item>
-                  <Menu.Item
-                    leftSection={<IconUserFilled />}
-                    onClick={() => navigate('/register')}
-                  >
-                    New Account
-                  </Menu.Item>
+                  {
+                    AccountLinks.map((link, i) => (
+                      <Menu.Item
+                        key={i}
+                        leftSection={link.icon}
+                        onClick={() => navigate(link.link)}
+                      >
+                        {link.label}
+                      </Menu.Item>
+                    ))
+                  }
                   <Menu.Label>Manage</Menu.Label>
                   <Menu.Item
                     leftSection={<IconBook2 />}
-                    onClick={() => navigate('/panel')}
+                    component='a'
+                    href='/panel'
                   >
                     Manage Blogs
                   </Menu.Item>
