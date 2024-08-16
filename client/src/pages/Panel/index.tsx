@@ -1,9 +1,14 @@
-import { AppShell, Burger, Button, Container, Group, NavLink, Text, Title } from "@mantine/core";
+import { AppShell, Burger, Button, Container, Divider, Group, NavLink, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconHome } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import ToggleColorScheme from "../../components/ToggleColorScheme";
 
 const Panel = () => {
   const [opened, { toggle }] = useDisclosure();
+  const navigate = useNavigate()
+
   return (
     <AppShell
       header={{ height: 60 }}
@@ -15,17 +20,19 @@ const Panel = () => {
           <Burger hiddenFrom="sm" opened={opened} onClick={toggle} />
           <Title order={2}>Logo</Title>
           <Group>
-            <Button p={1}>test</Button>
+            <ToggleColorScheme/>
           </Group>
         </Group>
 
       </AppShell.Header>
-      <AppShell.Navbar>
-        <NavLink
-          label="test"
-        >
-          <NavLink label="test" />
-        </NavLink>
+      <AppShell.Navbar py="md">
+        <Divider label="Home Page" />
+        <NavLink 
+          label="Home Page"
+          leftSection={<IconHome/>}
+          component="a"
+          href="/"
+        />
       </AppShell.Navbar>
 
       <AppShell.Main>

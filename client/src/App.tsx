@@ -7,6 +7,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import usePageLoading from './hooks/usePageLoading';
 import LoadingBar from 'react-top-loading-bar';
+import ToggleColorScheme from './components/ToggleColorScheme';
 
 const navLinks: Array<{
   name: string,
@@ -136,9 +137,7 @@ const App: React.FC = () => {
                   </Menu.Item>
                 </Menu.Dropdown>
               </Menu>
-              <HeaderButton onClick={toggleColorScheme} color={colorScheme === 'dark' ? "yellow" : 'blue'}>
-                {colorScheme === 'dark' ? <IconSun /> : <IconMoon />}
-              </HeaderButton>
+              <ToggleColorScheme/>
             </Group>
           </Group>
         </Group>
