@@ -1,4 +1,4 @@
-import { Box, Card, Image, SimpleGrid, Skeleton, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
+import { Box, SimpleGrid, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
 import blogRoutes from "../routes/blogRoutes";
@@ -18,7 +18,7 @@ const getBlogs = () => {
 
         console.error(err);
 
-      });
+      })
 
   }, []);
 
@@ -60,18 +60,13 @@ const Page: React.FC = () => {
               id={blog._id}
               title={blog.title}
               content={blog.content}
-              
-              image={blog.image ? (
-                <Image src={"/images/personal_pp.png"} alt={`blog-image-${blog._id}`} w={"100%"} mah={175} bgp={"center"} />
-              ): (
-                <Skeleton w={"100%"} h={175}/>
-              )}
+              image={blog.image}
             />
           ))}
         </SimpleGrid>
       ) : (
         <Text c={theme.primaryColor} ta={"center"}>
-          Couldn't find any blogs
+          Couldn't find any blogs 😭
         </Text>
       )}
     </Box>

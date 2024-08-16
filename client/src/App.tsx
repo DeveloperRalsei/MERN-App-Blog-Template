@@ -1,4 +1,4 @@
-import { AppShell, Avatar, Box, Burger, Button, Container, DefaultMantineColor, Divider, Group, Menu, NavLink, Progress, useMantineColorScheme, useMantineTheme } from '@mantine/core';
+import { AppShell, Avatar, Burger, Button, Container, DefaultMantineColor, Divider, Group, Menu, NavLink, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { HeaderButton } from './components/HeaderButton';
 import { IconBook, IconBook2, IconChevronDown, IconChevronRight, IconHome, IconLogin2, IconLogout2, IconMoon, IconSun, IconUserCircle, IconUserFilled } from '@tabler/icons-react';
@@ -17,7 +17,7 @@ const navLinks: Array<{
 }> = [
     {
       name: "Home",
-      link: "/",
+      link: "/home",
       icon: <IconHome />,
       color: "teal"
     },
@@ -64,7 +64,7 @@ const App: React.FC = () => {
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           <Group justify="space-between" style={{ flex: 1 }}>
             <Group>
-              <MantineLogo size={25} color={theme.primaryColor} />
+              <MantineLogo size={25} color={theme.primaryColor} cursor={"pointer"}  onClick={() => navigate("/")}/>
               <Group ml={20} gap={5} visibleFrom="sm">
                 {navLinks.map((navLink, i) => (
                   <HeaderButton
@@ -166,7 +166,7 @@ const App: React.FC = () => {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Container size={"md"}>
+        <Container p={0}>
           <Outlet />
         </Container>
       </AppShell.Main>

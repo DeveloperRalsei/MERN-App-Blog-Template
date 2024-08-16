@@ -1,8 +1,7 @@
-import { Anchor, Divider, Image, SimpleGrid, Space, Title, useMantineTheme, useMantineColorScheme, Code, List } from "@mantine/core";
+import { Anchor, Divider, Image, SimpleGrid, Space, Title, useMantineTheme, Code, List } from "@mantine/core";
 
 export const useMdxComps = () => {
   const theme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
 
   return {
     h1: (props: any) => (

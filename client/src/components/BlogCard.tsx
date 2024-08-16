@@ -1,17 +1,19 @@
-import { Card, Text, Stack, useMantineTheme, Image, Skeleton } from '@mantine/core';
+import { Card, Text, Stack, useMantineTheme, Image, Group, useMantineColorScheme } from '@mantine/core';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { ObjectId } from 'mongoose';
 
 interface IProps{
-  id: any,
+  id: ObjectId | any,
   title: string,
   content: string,
-  image?: React.ReactNode;
+  image?: string;
 }
 
 const BlogCard: React.FC<IProps> = ({ id, title, content, image }) => {
   const theme = useMantineTheme();
-  const navigate = useNavigate()
+  const {colorScheme} = useMantineColorScheme()
+  console.log(image)
 
   return (
     <Card
@@ -20,12 +22,18 @@ const BlogCard: React.FC<IProps> = ({ id, title, content, image }) => {
       w={"100%"}
       p={"md"}
       radius={theme.defaultRadius}
-      style={{ boxShadow: "0 0 30px 0 rgba(0, 0, 0, .2), 0 0 1px 1px rgba(0, 0, 0, .2)" }}
-      onClick={() => navigate(id)}
+      component={Link}
+      to={id}
       maw={500}
     >
       <Stack>
-        {image}
+        {image ? (
+          <Image src={image} w={"100%"} alt={`image-${title}-${id}`} />
+        ) : (
+          <Group  h={175} w={"100%"} align='center' justify='center' bg={colorScheme === 'dark' ? 'dark' : theme.colors.dark[0]}>
+            <Text fz={23}>No Image</Text>
+          </Group>
+        )}
         <Text>{title}</Text>
         <Text>{content}</Text>
       </Stack>
