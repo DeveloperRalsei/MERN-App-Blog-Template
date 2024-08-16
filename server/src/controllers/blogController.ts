@@ -18,7 +18,13 @@ export const blogControllers = {
             }> = await blogModel.find();
 
             let resInfo: blogRes = {
-                message: blogs.length === 0 ? "Couldn't find blogs" : "Blogs loaded",
+                message: blogs.length === 0 ? {
+                    type: 'error',
+                    err: "Couldn't find blogs"
+                } : {
+                    type: 'standart',
+                    msg: "Blogs loaded"
+                },
                 success: true,
                 data: blogs
             };
@@ -27,7 +33,10 @@ export const blogControllers = {
         } catch (error) {
 
             let resInfo: blogRes = {
-                message: "Something went wrong while trying to load blogs: " + error,
+                message:  {
+                    type: 'error',
+                    err: "No blog was deleted"
+                },
                 success: false
             };
 
@@ -110,7 +119,10 @@ export const blogControllers = {
 
         function defaultRes(i: string) {
             return {
-                message: "This path required: " + i,
+                message: {
+                    type: 'error',
+                    err: "This path required: " + i
+                },
                 success: false,
                 data: []
             } as blogRes;
@@ -129,7 +141,10 @@ export const blogControllers = {
 
             if (!blog) {
                 let resInfo: blogRes = {
-                    message: "Couldn't find any blog",
+                    message: {
+                        type: "error",
+                        err: "Couldn't find any blog",
+                    },
                     success: false,
                     data: []
                 };
@@ -138,7 +153,10 @@ export const blogControllers = {
             }
 
             let resInfo: blogRes = {
-                message: "Blog Updated",
+                message: {
+                    type: "standart",
+                    msg: "Blog Updated"
+                },
                 success: true,
                 data: blog
             };
@@ -146,7 +164,10 @@ export const blogControllers = {
 
         } catch (error) {
             let resInfo: blogRes = {
-                message: "" + error,
+                message: {
+                    type: "error",
+                    err: error as string
+                },
                 success: false,
                 data: []
             };
@@ -161,7 +182,10 @@ export const blogControllers = {
 
             if (!blog) {
                 const resInfo: blogRes = {
-                    message: "Couldn't find any blog to delete",
+                    message: {
+                        type: 'error',
+                        err: "Couldn't find any blog to delete"
+                    },
                     success: false,
                     data: []
                 };
@@ -174,14 +198,20 @@ export const blogControllers = {
 
             if (deleteResult) {
                 const resInfo: blogRes = {
-                    message: "Blog deleted successfully",
+                    message: {
+                        type: 'standart',
+                        msg: "Blog deleted successfully"
+                    },
                     success: true
                 };
 
                 easyRes(req, res, 200, resInfo);
             } else {
                 const resInfo: blogRes = {
-                    message: "No blog was deleted",
+                    message: {
+                        type: 'error',
+                        err: "No blog was deleted"
+                    },
                     success: false,
                     data: []
                 };
@@ -191,7 +221,10 @@ export const blogControllers = {
         } catch (error) {
             console.error(error);
             const resInfo: blogRes = {
-                message: "" + error,
+                message: {
+                    type: 'error',
+                    err: error as string
+                },
                 success: false,
                 data: []
             };

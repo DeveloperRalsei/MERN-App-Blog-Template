@@ -24,17 +24,18 @@ const BlogCard: React.FC<IProps> = ({ id, title, content, image }) => {
       radius={theme.defaultRadius}
       maw={500}
     >
-      <Stack>
+      <Stack
+      >
         {image ? (
           <Image
             src={image}
+            mah={200}
+            bgp={"center"}
             w={"100%"}
-            component={Link}
-            to={id}
           />
         ) : (
           <Group
-            h={175}
+            h={200}
             w={"100%"}
             align='center'
             justify='center'
@@ -43,7 +44,12 @@ const BlogCard: React.FC<IProps> = ({ id, title, content, image }) => {
             <Text fz={23}>No Image</Text>
           </Group>
         )}
-        <Text>{title}</Text>
+        <Text
+          fz={27}
+          c={theme.primaryColor}
+          component={Link}
+          to={id}
+        >{title}</Text>
         <Text>{content}</Text>
       </Stack>
     </Card>

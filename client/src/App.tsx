@@ -1,7 +1,7 @@
-import { AppShell, Avatar, Burger, Button, Container, DefaultMantineColor, Divider, Group, Menu, NavLink, useMantineColorScheme, useMantineTheme } from '@mantine/core';
+import { AppShell, Avatar, Box, Burger, Button, Container, DefaultMantineColor, Divider, Group, Menu, NavLink, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { HeaderButton } from './components/HeaderButton';
-import { IconBook, IconBook2, IconChevronDown, IconChevronRight, IconHome, IconLogin2, IconLogout2, IconMoon, IconSun, IconUser, IconUserCircle, IconUserFilled } from '@tabler/icons-react';
+import { IconBook, IconBook2, IconChevronDown, IconHome, IconLogin2, IconLogout2, IconUserCircle, IconUserFilled } from '@tabler/icons-react';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { Outlet, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
@@ -32,33 +32,33 @@ const navLinks: Array<{
 const AccountLinks: Array<{
   label: string,
   link: string,
-  icon: React.ReactNode
+  icon: React.ReactNode;
 }> = [
-  {
-    label: "Profile",
-    icon: <IconUserCircle />,
-    link: "/account/test"
-  },
-  {
-    label: "Log Out",
-    icon: <IconLogout2/>,
-    link:'/logout',
-  },
-  {
-    label: "Log In",
-    icon: <IconLogin2/>,
-    link: "Log In"
-  },
-  {
-    label: "New Account",
-    icon: <IconUserFilled/>,
-    link: "/register"
-  }
-]
+    {
+      label: "Profile",
+      icon: <IconUserCircle />,
+      link: "/account/test"
+    },
+    {
+      label: "Log Out",
+      icon: <IconLogout2 />,
+      link: '/logout',
+    },
+    {
+      label: "Log In",
+      icon: <IconLogin2 />,
+      link: "Log In"
+    },
+    {
+      label: "New Account",
+      icon: <IconUserFilled />,
+      link: "/register"
+    }
+  ];
 
 const App: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
-  const { toggleColorScheme, colorScheme } = useMantineColorScheme();
+  const { colorScheme } = useMantineColorScheme();
   const navigate = useNavigate();
   const theme = useMantineTheme();
   const [active, setActive] = useState<number>(0);
@@ -91,7 +91,7 @@ const App: React.FC = () => {
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           <Group justify="space-between" style={{ flex: 1 }}>
             <Group>
-              <MantineLogo size={25} color={theme.primaryColor} cursor={"pointer"}  onClick={() => navigate("/")}/>
+              <MantineLogo size={25} color={theme.primaryColor} cursor={"pointer"} onClick={() => navigate("/")} />
               <Group ml={20} gap={5} visibleFrom="sm">
                 {navLinks.map((navLink, i) => (
                   <HeaderButton
@@ -137,13 +137,13 @@ const App: React.FC = () => {
                   </Menu.Item>
                 </Menu.Dropdown>
               </Menu>
-              <ToggleColorScheme/>
+              <ToggleColorScheme />
             </Group>
           </Group>
         </Group>
       </AppShell.Header>
 
-      <AppShell.Navbar p={"md"}>
+      <AppShell.Navbar>
         <AppShell.Section>
           {navLinks.map((navLink, index) => (
             <NavLink
@@ -161,20 +161,33 @@ const App: React.FC = () => {
           variant={colorScheme === 'dark' ? 'light' : 'filled'}
           label={"Account"}
           color={"teal"}
-          rightSection={<IconChevronRight size={14} />}
-          leftSection={<Avatar variant='transparent' />}
-          mb={3}
+          leftSection={<Avatar variant='transparent' size={30} />
+          }
         >
+          <Divider label='Account' />
+          {AccountLinks.map((link, i) => (
+            <NavLink
+              key={i}
+              variant={colorScheme === 'dark' ? 'light' : 'filled'}
+              label={link.label}
+              leftSection={link.icon}
+              onClick={() => handleNavLink(link.link, i)}
+              active={i === active}
+              color='grape'
+            />
+          ))}
 
-          <NavLink
-            label="Profile"
-            leftSection={<IconUserCircle />}
-          />
-          <Divider label='test'/>
-          <NavLink
-            label="Profile"
-            leftSection={<IconUserCircle />}
-          />
+          <Box>
+            <Divider label='Manage' />
+            <NavLink
+              label="Manage Blogs"
+              leftSection={<IconBook />}
+              component='a'
+              href='/panel'
+              active
+              color='gray'
+            />
+          </Box>
         </NavLink>
       </AppShell.Navbar>
 

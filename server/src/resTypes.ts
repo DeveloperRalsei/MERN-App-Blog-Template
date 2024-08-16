@@ -1,5 +1,11 @@
 export type blogRes = {
-    message: string
+    message: {
+        type: 'standart'
+        msg: string
+    } | {
+        type: 'error'
+        err: unknown | string
+    }
     success: boolean
     data?: Array<{
         title: string,

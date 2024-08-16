@@ -6,7 +6,13 @@ export const easyRes = (
     res: Response,
     statusCode: number,
     information: {
-        message: string,
+        message: {
+            type: 'standart',
+            msg?: string
+        } | {
+            type: 'error',
+            err?: unknown | string
+        },
         success: boolean,
         data?: any
     }

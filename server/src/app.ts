@@ -4,6 +4,7 @@ import blogRoutes from './routes/blogs';
 import ssr from './routes/serverSideRendering';
 import path from "node:path";
 import multer from 'multer';
+import { easyRes } from "./utils";
 
 const app: Express = express();
 
@@ -34,5 +35,13 @@ app.use("/hmm", (req, res, next) => {
     next();
 });
 app.use("/", ssr);
+app.use("*", (req, res) => easyRes(req, res, 404, {
+    message: {
+        type: "error",
+        err: "Wrong usage"
+    },
+    success: false,
+    data: []
+}));
 
 export default app;

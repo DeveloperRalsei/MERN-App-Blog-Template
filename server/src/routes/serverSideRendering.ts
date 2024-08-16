@@ -19,13 +19,13 @@ app.get("/", async (req: Request, res: Response) => {
 
   } catch (err) {
 
-    console.error(err);
-
     easyRes(req, res, 500, {
-      message: "Couldn't render site",
+      message: {
+        type: 'error',
+        err: err as string
+      },
       success: false,
       data: []
-
     });
   }
 });

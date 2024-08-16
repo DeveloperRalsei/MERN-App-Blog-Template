@@ -4,7 +4,7 @@ import '@mantine/core/styles.css';
 import PageRenderer from './PageRenderer';
 
 const theme = createTheme({
-  primaryColor: "pink",
+  primaryColor: "blue",
   colors: {
     dark: [
       '#C1C2C5',
