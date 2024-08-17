@@ -1,4 +1,4 @@
-import { Anchor, Divider, Image, SimpleGrid, Space, Title, useMantineTheme, Code, List } from "@mantine/core";
+import { Anchor, Divider, Image, SimpleGrid, Space, Title, useMantineTheme, Code, List, Text } from "@mantine/core";
 
 export const useMdxComps = () => {
   const theme = useMantineTheme();
@@ -29,7 +29,7 @@ export const useMdxComps = () => {
     hr: (props: any) => <Divider {...props} />,
     Space: (props: any) => <Space {...props} />,
     img: (props: any) => <Image {...props} width="100%" />,
-    p: (props: any) => <p style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }} {...props} />,
+    p: (props: any) => <Text fz={20} style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }} {...props} />,
     ul: (props: any) => <List {...props}/>,
     li: (props: any) => <List.Item {...props}/>,
     code: (props: any) => <Code style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }} {...props} />,

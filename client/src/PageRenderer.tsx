@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Blogs from './pages/Blogs';
 import NotFound from './pages/NotFound';
 import Panel, { UploadBlog } from './pages/Panel';
+import HomePanel from './pages/Panel/HomePanel';
 
 const router = createBrowserRouter([
    {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
       children: [
          {
             path: "",
-            element: <>Home Panel Page</>
+            element: <HomePanel/>
          },
          {
             path: "blogs",
