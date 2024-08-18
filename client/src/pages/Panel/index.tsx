@@ -1,6 +1,6 @@
-import { AppShell, Box, Burger, Button, Container, Divider, Group, NavLink, Text, Title } from "@mantine/core";
+import { Anchor, AppShell, Box, Burger, Button, Container, Divider, Group, NavLink, Text, Title, useMantineTheme } from "@mantine/core";
 import { useDisclosure, useFullscreen } from "@mantine/hooks";
-import { IconBook, IconDeviceDesktop, IconExternalLink, IconHome, IconWebhook } from "@tabler/icons-react";
+import { IconBook, IconBookFilled, IconDeviceDesktop, IconExternalLink, IconHome, IconWebhook } from "@tabler/icons-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import ToggleColorScheme from "../../components/ToggleColorScheme";
 import { HeaderButton } from "../../components/HeaderButton";
@@ -9,8 +9,9 @@ const Panel = () => {
   const [opened, { toggle }] = useDisclosure();
   const fullscreen = useFullscreen();
   const navigate = useNavigate();
+  const theme = useMantineTheme()
 
-  const handleNavigate = (link: string, index?: number) => {
+  const handleNavigate = (link: string) => {
     navigate(link);
     toggle()
   };
@@ -55,7 +56,12 @@ const Panel = () => {
         <NavLink
           label={"List Blogs"}
           leftSection={<IconBook />}
-          onClick={() => handleNavigate('blogs', 1)}
+          onClick={() => handleNavigate('blogs')}
+        />
+        <NavLink 
+          label={"Create New Blog"}
+          leftSection={<IconBookFilled/>}
+          onClick={() => handleNavigate('newBlog')}
         />
       </AppShell.Navbar>
 
@@ -66,17 +72,14 @@ const Panel = () => {
       </AppShell.Main>
 
       <AppShell.Footer>
-        <Group justify="space-around" align="start" h={"100%"} gap={7}>
+        <Group justify="space-around" align="start" h={"100%"}>
           <div></div>
           <div></div>
           <div></div>
           <Box>
-            Made by <Text
-              component="a"
-              href="http://developerRalsei.github.io"
-
-              target="_blank"
-            >Developer Ralsei</Text>
+            Made by <Anchor href="https://developerRalsei.github.io/" target="_blank">
+            Developer Ralsei
+          </Anchor>
           </Box>
         </Group>
       </AppShell.Footer>
@@ -84,5 +87,5 @@ const Panel = () => {
   );
 };
 
-export { UploadBlog } from './UploadBlog';
+export { Page as BlogList } from './Blogs';
 export default Panel;

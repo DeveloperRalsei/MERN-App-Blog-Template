@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongoose';
 
 export type Blog = {
-  _id: ObjectId,
+  _id: any,
   title: string,
   content: string,
   image?: string;

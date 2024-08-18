@@ -13,7 +13,6 @@ interface IProps {
 const BlogCard: React.FC<IProps> = ({ id, title, content, image }) => {
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
-  console.log(image);
 
   return (
     <Card
