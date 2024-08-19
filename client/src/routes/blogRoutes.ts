@@ -1,5 +1,6 @@
 import axios from "axios";
 import { env } from "../env";
+import { ObjectId } from "mongoose";
 const baseUrl: string = env.dev_env === 'development' ? 'http://localhost:3000' : ''; 
 
 const getBlogs = async () => {
@@ -18,7 +19,23 @@ const getBlogs = async () => {
   }
 };
 
-export default {
-  getBlogs
+const getBlogById = async (blogId: ObjectId | any) => {
+  try {
+    const response = await axios.get(baseUrl + `/api/blogs/${blogId}`)
+    return response
+  } catch (error) {
+    console.error(error)
+    return {
+      data: [],
+      status: 500,
+      statusText: "Internal Server Error",
+      header: {},
+      config: {}
+    }
+  }
+}
 
+export default {
+  getBlogs,
+  getBlogById
 };

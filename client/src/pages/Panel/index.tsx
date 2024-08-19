@@ -87,5 +87,6 @@ const Panel = () => {
   );
 };
 
+export { Page as Edit } from './Edit';
 export { Page as BlogList } from './Blogs';
 export default Panel;

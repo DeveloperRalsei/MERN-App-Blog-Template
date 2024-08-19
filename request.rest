@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/blogs
 
 ### List just one blog
-GET http://localhost:3000/api/blogs/66b35eb98029247a82ccaf58/
+GET http://localhost:3000/api/blogs/66b3506aed2d3d9e06d2a024/
 
 ### Listing a blog doesnt exist
 GET http://localhost:3000/api/blogs/66b35eb98029247a82ccaf51

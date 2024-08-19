@@ -38,7 +38,7 @@ app.use("/", ssr);
 app.use("*", (req, res) => easyRes(req, res, 404, {
     message: {
         type: "error",
-        err: "Wrong usage"
+        err: "Wrong usage:" + req.url
     },
     success: false,
     data: []
