@@ -4,6 +4,7 @@ import blogRoutes from '../../routes/blogRoutes';
 import { IconPencil } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { Blog } from '../../types';
+import { useDebouncedValue } from '@mantine/hooks';
 
 const BlogList = ({
   blogs,
@@ -56,6 +57,7 @@ export const Page = () => {
   const [blogs, setBlogs] = useState<Array<Blog>>([]);
   const [searchValue, setSearchValue] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [debounced] = useDebouncedValue(searchValue, 200)
 
   useEffect(() => {
 
@@ -95,7 +97,7 @@ export const Page = () => {
           <Table.Th w={0}>Edit</Table.Th>
         </Table.Thead>
         <Table.Tbody>
-          <BlogList blogs={blogs} searchValue={searchValue} isLoading={isLoading} />
+          <BlogList blogs={blogs} searchValue={debounced} isLoading={isLoading} />
         </Table.Tbody>
       </Table>
     </Box>

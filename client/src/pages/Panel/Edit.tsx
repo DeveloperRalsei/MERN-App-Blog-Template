@@ -1,36 +1,102 @@
+import { Box, Button, Card, Divider, Image, Input, Loader, Modal, Paper, SimpleGrid, TextInput, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { Blog } from "../../types";
 import blogRoutes from "../../routes/blogRoutes";
-import { Loader, Text, TextInput } from "@mantine/core";
+import { useParams } from "react-router-dom";
+import { useForm } from "@mantine/form";
+import { } from '@mantine/tiptap';
+import TextEditor from "./panelComps/TextEditor";
+import { useDisclosure } from "@mantine/hooks";
+import { IconBook, IconNotebook } from "@tabler/icons-react";
 
 export const Page = () => {
-  const { blogId } = useParams<{ blogId: string; }>();
+
+  const { blogId } = useParams();
   const [blog, setBlog] = useState<Blog>();
-  
-  useEffect(() => {
-  async function loadBlog() {
-    try {
-      const response = await blogRoutes.getBlogById(blogId);
-      if (response.data.success === 'false') {
-        return;
-      } else {
-        setBlog(response.data.data[0]);
-      }
-    } catch (error) {
-      console.error(error);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [modalOpened, { close, open }] = useDisclosure();
+
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      title: blog?.title || "",
+      content: blog?.content || ""
     }
-  }
-    
+  });
+
+  useEffect(() => {
+
+    async function loadBlog() {
+      try {
+
+        setIsLoading(true);
+        const response = await blogRoutes.getBlogById(blogId);
+        const data = response.data.data[0];
+        setBlog(data);
+
+      } catch (error) {
+
+        setIsLoading(false);
+        console.error(error as string);
+
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     loadBlog();
   }, []);
-  
-  if (!blog) return <Loader />;
-  
+
+  useEffect(() => {
+    if (blog) {
+      form.setFieldValue("title", blog.title);
+    }
+
+  }, [blog, form]);
+
+  if (isLoading || !blog) return <Loader />;
+
   return (
-  <form action="">
-    <TextInput value={blog.title} />
-    <Text>{blog.image}</Text>
-  </form>
+
+    <form onSubmit={form.onSubmit(values => console.log(values))}>
+      <Title order={3}>
+        Editing {'"' + blog?.title + '"'}
+      </Title>
+      <Divider my={10} />
+      <SimpleGrid cols={{ md: 2, sm: 1 }}>
+        <Paper>
+          <Image src={blog?.image} alt={"blogImage-" + blog?._id} />
+        </Paper>
+        <Box >
+
+          <TextInput
+            withAsterisk
+            label="Blog Title"
+            mb={30}
+            rightSection={<IconBook/>}
+            {...form.getInputProps("title")}
+          />
+
+          <Input.Wrapper label="Content">
+            <Input
+              onClick={() => open()}
+              placeholder="Change Content"
+              rightSection={<IconNotebook/>}
+              style={{ cursor: "pointer" }}
+            />
+          </Input.Wrapper>
+
+          <Modal
+            opened={modalOpened}
+            onClose={close}
+            title="Content"
+            size={"lg"}
+          >
+            <TextEditor content={blog.content} />
+          </Modal>
+        </Box>
+      </SimpleGrid>
+    </form>
+
   );
 };
