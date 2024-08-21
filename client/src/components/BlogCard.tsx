@@ -49,7 +49,7 @@ const BlogCard: React.FC<IProps> = ({ id, title, content, image }) => {
           component={Link}
           to={id}
         >{title}</Text>
-        <Text>{content}</Text>
+        <Text>{}</Text>
       </Stack>
     </Card>
   );

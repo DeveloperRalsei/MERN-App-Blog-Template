@@ -1,10 +1,11 @@
 import { ButtonGroup, Button, Table, UnstyledButton, ActionIcon, useMantineColorScheme, Group, Skeleton, TextInput, Box, Space, useMantineTheme, Loader, Text } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import blogRoutes from '../../routes/blogRoutes';
 import { IconPencil } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { Blog } from '../../types';
 import { useDebouncedValue } from '@mantine/hooks';
+import { nprogress } from '@mantine/nprogress';
 
 const BlogList = ({
   blogs,
@@ -26,12 +27,6 @@ const BlogList = ({
   if (isLoading) return <Group align='center' justify='center'>
     <Loader />
   </Group>;
-
-  if (!filteredBlogs.length) return (
-    <Table.Tr>
-      <Table.Td colSpan={99} ta={"center"} fz={20}>Couldn't find any blog</Table.Td>
-    </Table.Tr>
-  );
 
   return filteredBlogs.map((blog, i) => (
     <Table.Tr
@@ -62,27 +57,25 @@ export const Page = () => {
   useEffect(() => {
 
     const loadBlogs = async () => {
+      nprogress.start()
       try {
         const response = await blogRoutes.getBlogs();
         setBlogs(response.data.data);
       } catch (error) {
         console.error(error);
+        nprogress.reset()
         setBlogs([]);
-      } finally { setIsLoading(false); }
+      } finally { setIsLoading(false); setTimeout(() => {
+        nprogress.complete()
+      }, 100); }
     };
 
     loadBlogs();
 
   }, []);
 
-  if (blogs === undefined) {
-    return (
-      "Blogs couldn't loaded"
-    );
-  }
-
   return (
-    <Box>
+    <>
       <TextInput
         placeholder='Search...'
         value={searchValue}
@@ -97,9 +90,13 @@ export const Page = () => {
           <Table.Th w={0}>Edit</Table.Th>
         </Table.Thead>
         <Table.Tbody>
-          <BlogList blogs={blogs} searchValue={debounced} isLoading={isLoading} />
+          {blogs !== undefined ? (
+            <BlogList blogs={blogs} searchValue={debounced} isLoading={isLoading} />
+          ) : (
+            <></>
+          )}
         </Table.Tbody>
       </Table>
-    </Box>
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { Box, Button, Card, Divider, Image, Input, Loader, Modal, Paper, SimpleGrid, TextInput, Title } from "@mantine/core";
+import { Box, Button, Card, Divider, FileInput, Image, Input, Loader, Modal, Paper, SimpleGrid, TextInput, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Blog } from "../../types";
 import blogRoutes from "../../routes/blogRoutes";
@@ -73,25 +73,27 @@ export const Page = () => {
             withAsterisk
             label="Blog Title"
             mb={30}
-            rightSection={<IconBook/>}
+            rightSection={<IconBook />}
             {...form.getInputProps("title")}
           />
 
-          <Input.Wrapper label="Content">
-            <Input
-              onClick={() => open()}
-              placeholder="Change Content"
-              rightSection={<IconNotebook/>}
-              style={{ cursor: "pointer" }}
-            />
-          </Input.Wrapper>
+          <FileInput
+            label="Content"
+            onClick={() => open()}
+            placeholder="Change Content"
+            rightSection={<IconNotebook />}
+            style={{ cursor: "pointer" }}
+          />
 
           <Modal
             opened={modalOpened}
             onClose={close}
             title="Content"
-            size={"lg"}
+            size={"xl"}
+            closeOnClickOutside={false}
+            closeOnEscape={false}
           >
+
             <TextEditor content={blog.content} />
           </Modal>
         </Box>

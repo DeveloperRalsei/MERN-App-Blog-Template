@@ -1,8 +1,12 @@
 import { createRoot } from "react-dom/client";
 import { MantineProvider, createTheme } from "@mantine/core";
 import '@mantine/core/styles.css';
-import '@mantine/tiptap/styles.css'
+import '@mantine/tiptap/styles.css';
+import '@mantine/nprogress/styles.css';
 import PageRenderer from './PageRenderer';
+import { NavigationProgress } from "@mantine/nprogress";
+import { MDXProvider } from "@mdx-js/react";
+import Hmm from "./components/Hmm";
 
 const theme = createTheme({
   primaryColor: "pink",
@@ -26,6 +30,10 @@ const root = document.getElementById("root");
 
 createRoot(root!).render(
   <MantineProvider theme={theme} defaultColorScheme="dark">
-    <PageRenderer/>
+    <MDXProvider>
+      <NavigationProgress color={theme.primaryColor}/>
+      <PageRenderer />
+      <Hmm />
+    </MDXProvider>
   </MantineProvider>
 );

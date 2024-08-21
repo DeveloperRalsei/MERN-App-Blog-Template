@@ -6,11 +6,11 @@ import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
- 
+
 const TextEditor = ({
   content
 }: {
-  content?: string
+  content?: string;
 }) => {
   const editor = useEditor({
     extensions: [
@@ -28,6 +28,12 @@ const TextEditor = ({
   return (
     <RichTextEditor editor={editor}>
       <RichTextEditor.Toolbar sticky stickyOffset={60}>
+
+        <RichTextEditor.ControlsGroup>
+          <RichTextEditor.Undo />
+          <RichTextEditor.Redo />
+        </RichTextEditor.ControlsGroup>
+        
         <RichTextEditor.ControlsGroup>
           <RichTextEditor.Bold />
           <RichTextEditor.Italic />
@@ -65,16 +71,11 @@ const TextEditor = ({
           <RichTextEditor.AlignJustify />
           <RichTextEditor.AlignRight />
         </RichTextEditor.ControlsGroup>
-
-        <RichTextEditor.ControlsGroup>
-          <RichTextEditor.Undo />
-          <RichTextEditor.Redo />
-        </RichTextEditor.ControlsGroup>
       </RichTextEditor.Toolbar>
 
       <RichTextEditor.Content />
     </RichTextEditor>
   );
-}
+};
 
-export default TextEditor
+export default TextEditor;

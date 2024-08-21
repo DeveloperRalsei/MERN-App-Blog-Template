@@ -5,9 +5,8 @@ import { IconBook, IconBook2, IconChevronDown, IconHome, IconLogin2, IconLogout2
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { Outlet, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import usePageLoading from './hooks/usePageLoading';
-import LoadingBar from 'react-top-loading-bar';
 import ToggleColorScheme from './components/ToggleColorScheme';
+import { NavigationProgress } from '@mantine/nprogress';
 
 const navLinks: Array<{
   name: string,
@@ -62,7 +61,6 @@ const App: React.FC = () => {
   const navigate = useNavigate();
   const theme = useMantineTheme();
   const [active, setActive] = useState<number>(0);
-  const ref = usePageLoading();
 
   const handleNavLink = (navLink: string, index: number) => {
     navigate(navLink);
@@ -76,13 +74,6 @@ const App: React.FC = () => {
       navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: true, mobile: !opened } }}
       padding="md"
     >
-      <LoadingBar
-        ref={ref}
-        color={theme.primaryColor}
-        height={5}
-        style={{ borderRadius: "0 10px 10px 0" }}
-        waitingTime={100}
-      />
       <AppShell.Header style={{
         backgroundColor: colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
       }}

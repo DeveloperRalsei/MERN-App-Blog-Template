@@ -1,8 +1,9 @@
-import { Box, Group, Loader, SimpleGrid, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
+import { Group, Loader, SimpleGrid, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
 import blogRoutes from "../routes/blogRoutes";
 import { Blog } from "../types";
+import { nprogress } from "@mantine/nprogress";
 
 const BlogList = ({
   blogs,
@@ -60,18 +61,24 @@ const Page: React.FC = () => {
   const [blogs, setBlogs] = useState<Array<Blog>>([]);
 
   useEffect(() => {
-    blogRoutes
-      .getBlogs()
-      .then((response) => {
-        setBlogs(response.data.data || []);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+
+    const loadBlogs = async () => {
+      nprogress.start()
+      try {
+        const response = await blogRoutes.getBlogs()
+        setBlogs(response.data.data || [])
+        nprogress.complete()
+      } catch (error) {
+        nprogress.reset()
+        console.error(error)
+      }
+    }
+
+    loadBlogs()
   }, []);
 
   return (
-    <Box>
+    <>
       <Title order={1} c={theme.primaryColor}>
         Blogs
       </Title>
@@ -83,7 +90,7 @@ const Page: React.FC = () => {
         placeholder="Search..."
       />
       <BlogList blogs={blogs} searchValue={searchValue} />
-    </Box>
+    </>
   );
 };
 
