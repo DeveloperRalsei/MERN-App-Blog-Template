@@ -1,16 +1,11 @@
-import { Card, Text, Stack, useMantineTheme, Image, Group, useMantineColorScheme } from '@mantine/core';
+import { Card, Text, Stack, useMantineTheme, Image, Group, useMantineColorScheme, Pill, PillGroup } from '@mantine/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ObjectId } from 'mongoose';
+import { Blog } from '../types';
 
-interface IProps {
-  id: ObjectId | any,
-  title: string,
-  content: string,
-  image?: string;
-}
+interface IProps extends Blog { }
 
-const BlogCard: React.FC<IProps> = ({ id, title, content, image }) => {
+const BlogCard: React.FC<IProps> = ({ _id, title, image, author, tags }) => {
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
 
@@ -47,9 +42,18 @@ const BlogCard: React.FC<IProps> = ({ id, title, content, image }) => {
           fz={27}
           c={theme.primaryColor}
           component={Link}
-          to={id}
+          to={_id}
         >{title}</Text>
-        <Text>{}</Text>
+        <Group w={"100%"} align='center' justify='space-between'>
+          <Text>Author: {author}</Text>
+          <PillGroup>
+            {tags?.map((tag,i) => (
+              <Pill key={i}>
+                {tag}
+              </Pill>
+            ))}
+          </PillGroup>
+        </Group>
       </Stack>
     </Card>
   );

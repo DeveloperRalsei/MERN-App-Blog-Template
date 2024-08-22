@@ -1,5 +1,5 @@
 import { ButtonGroup, Button, Table, UnstyledButton, ActionIcon, useMantineColorScheme, Group, Skeleton, TextInput, Box, Space, useMantineTheme, Loader, Text } from '@mantine/core';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import blogRoutes from '../../routes/blogRoutes';
 import { IconPencil } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
@@ -28,6 +28,12 @@ const BlogList = ({
     <Loader />
   </Group>;
 
+  if(filteredBlogs.length === 0) return <Table.Tr>
+    <Table.Td colSpan={300} ta={"center"}>
+      Couldn't find any blogs 
+    </Table.Td>
+  </Table.Tr>
+
   return filteredBlogs.map((blog, i) => (
     <Table.Tr
       key={i}
@@ -52,22 +58,22 @@ export const Page = () => {
   const [blogs, setBlogs] = useState<Array<Blog>>([]);
   const [searchValue, setSearchValue] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [debounced] = useDebouncedValue(searchValue, 200)
+  const [debounced] = useDebouncedValue(searchValue, 125);
 
   useEffect(() => {
 
     const loadBlogs = async () => {
-      nprogress.start()
+      nprogress.start();
       try {
         const response = await blogRoutes.getBlogs();
         setBlogs(response.data.data);
+        nprogress.complete();
+        setIsLoading(false);
       } catch (error) {
         console.error(error);
-        nprogress.reset()
+        nprogress.reset();
         setBlogs([]);
-      } finally { setIsLoading(false); setTimeout(() => {
-        nprogress.complete()
-      }, 100); }
+      }
     };
 
     loadBlogs();
@@ -77,10 +83,10 @@ export const Page = () => {
   return (
     <>
       <TextInput
-        placeholder='Search...'
-        value={searchValue}
-        onChange={e => setSearchValue(e.target.value)}
-      />
+          placeholder='Search...'
+          value={searchValue}
+          onChange={e => setSearchValue(e.target.value)}
+        />
       <Space h={30} />
       <Table>
         <Table.Thead>
@@ -93,7 +99,7 @@ export const Page = () => {
           {blogs !== undefined ? (
             <BlogList blogs={blogs} searchValue={debounced} isLoading={isLoading} />
           ) : (
-            <></>
+            <Table.Tr><Table.Td colSpan={88} ta={"center"}>Couldn't load blogs, please try to refresh page</Table.Td></Table.Tr>
           )}
         </Table.Tbody>
       </Table>

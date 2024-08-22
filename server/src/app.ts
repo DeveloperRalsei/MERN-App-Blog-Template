@@ -32,8 +32,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use("/api/blogs", blogStorage.single('blogImage'), blogRoutes);
 app.use("/hmm", (req, res, next) => {
     res.send('<h3>Uhhh... You were NOT supposed to be here.</h3> <img src="/images/hey.gif" alt="you like kissing boiz, dont you"/>');
-    next();
 });
+app.use("/panel", ssr)
 app.use("/", ssr);
 app.use("*", (req, res) => easyRes(req, res, 404, {
     message: {

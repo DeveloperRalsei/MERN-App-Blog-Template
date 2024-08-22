@@ -3,19 +3,13 @@ import blogModel from "../models/blogModel";
 import { blogRes } from "../resTypes";
 import { easyRes } from "../utils";
 import { ObjectId } from "mongoose";
+import { Blog } from "../modelTypes";
 
 export const blogControllers = {
     getAllGET: async (req: Request, res: Response) => {
 
         try {
-            const blogs: Array<{
-                _id: ObjectId,
-                title: string,
-                content: string,
-                image?: string,
-                createdAt: Date,
-                updatedAt: Date;
-            }> = await blogModel.find();
+            const blogs: Array<Blog> = await blogModel.find();
 
             let resInfo: blogRes = {
                 message: blogs.length === 0 ? {
@@ -33,7 +27,7 @@ export const blogControllers = {
         } catch (error) {
 
             let resInfo: blogRes = {
-                message:  {
+                message: {
                     type: 'error',
                     err: "No blog was deleted"
                 },
@@ -47,14 +41,7 @@ export const blogControllers = {
         const id: string = req.params.id;
 
         try {
-            const blog: Array<{
-                _id: ObjectId,
-                title: string,
-                content: string,
-                image?: string,
-                createdAt: Date,
-                updatedAt: Date;
-            }> = await blogModel.find({
+            const blog: Array<Blog> = await blogModel.find({
                 _id: id
             });
 
@@ -82,7 +69,12 @@ export const blogControllers = {
 
     },
     newBlogPOST: async (req: Request, res: Response) => {
-        const { title, content } = req.body;
+        const { title, content, author, tags }: {
+            title: string,
+            content: string,
+            author: string,
+            tags: string[];
+        } = req.body;
         const image = req.file;
 
         if (!req.body) {
@@ -95,13 +87,18 @@ export const blogControllers = {
         }
 
         try {
-            const data = await blogModel.create({ title, content, image });
+            const data = await blogModel.create({ title, content, image, author, tags });
 
-            res.status(201).json({
-                message: "New blog created",
-                succes: true,
+            let resInfo: blogRes = {
+                message: {
+                    type: "standart",
+                    msg: "New Blog Created"
+                },
+                success: true,
                 data: data
-            });
+            };
+
+            easyRes(req, res, 201, resInfo);
 
         } catch (error) {
             res.status(404).json({
@@ -111,10 +108,12 @@ export const blogControllers = {
         }
     },
     updateBlogPATCH: async (req: Request, res: Response) => {
-        const { id, title, content }: {
-            id: ObjectId,
+        const { id, title, content, author, tags }: {
+            id: ObjectId | string,
             title: string,
             content: string;
+            author: string,
+            tags: string[];
         } = req.body;
 
         function defaultRes(i: string) {
@@ -131,11 +130,12 @@ export const blogControllers = {
         if (!id) return easyRes(req, res, 500, defaultRes("id"));
         if (!title) return easyRes(req, res, 500, defaultRes("title"));
         if (!content) return easyRes(req, res, 500, defaultRes("content"));
+        if (!author) return easyRes(req, res, 500, defaultRes("author"));
 
         try {
             const blog = await blogModel.findByIdAndUpdate(
                 id,
-                { $set: { title: title, content: content } },
+                { $set: { title: title, content: content, author: author, tags: tags } },
                 { new: true, runValidators: true }
             );
 
@@ -210,7 +210,7 @@ export const blogControllers = {
                 const resInfo: blogRes = {
                     message: {
                         type: 'error',
-                        err: "No blog was deleted"
+                        err: "Blog couldn't delete"
                     },
                     success: false,
                     data: []
@@ -230,6 +230,34 @@ export const blogControllers = {
             };
 
             easyRes(req, res, 500, resInfo);
+        }
+    },
+
+    deleteAllDELETE : async (req: Request,res: Response) => {
+        try {
+            await blogModel.deleteMany()
+
+            let resInfo: blogRes = {
+                message: {
+                    type: "standart",
+                    msg: "WARNING! All blogs deleted!!"
+                },
+                success: true,
+                data: []
+            }
+
+            easyRes(req,res,200,resInfo)
+        } catch (error) {
+            let resInfo: blogRes = {
+                message: {
+                    type: "error",
+                    err: error as string
+                },
+                success: false,
+                data: []
+            }
+
+            easyRes(req,res,500,resInfo)
         }
     }
 

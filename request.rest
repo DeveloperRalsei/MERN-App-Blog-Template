@@ -12,8 +12,13 @@ POST http://localhost:3000/api/blogs
 Content-Type: application/json
 
 {
-    "title": "test",
-    "content": "test"
+    "title": "First Blog",
+    "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus quae fugit est sint quia cupiditate? Dolor asperiores cum quae, incidunt sunt, dolorum cupiditate alias odio magni quis, accusamus unde consequuntur!asfdasdffas
+
+
+
+asfdasdf",
+    "author": "deneme"
 }
 
 ### Creating blog without a paramtter and getting an error
@@ -29,9 +34,10 @@ PATCH http://localhost:3000/api/blogs
 Content-Type: application/json
 
 {
-    "id": "66b4a74e35ec4675ca82f73c",
+    "id": "66b34f5f3c9ce529a33ad240",
     "title": "Yippii",
-    "content": "new Content"
+    "content": "new Content",
+    "author": "Mehmet"
 }
 
 ### delete Blog by Id
@@ -40,8 +46,12 @@ DELETE http://localhost:3000/api/blogs/
 Content-Type: application/json
 
 {
-    "id" : "66b35925a5c8f14230d2124d"
+    "id" : "66b34f5f3c9ce529a33ad240"
 }
+
+### DELETING ALL BLOGS!!
+
+DELETE  http://localhost:3000/api/blogs/confirm
 
 ### Hmm
 

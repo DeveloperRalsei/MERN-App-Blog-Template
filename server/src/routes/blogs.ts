@@ -12,4 +12,6 @@ router.patch("/", blogControllers.updateBlogPATCH)
 
 router.delete("/", blogControllers.deleteBlogDELETE)
 
+router.delete("/confirm",blogControllers.deleteAllDELETE)
+
 export default router

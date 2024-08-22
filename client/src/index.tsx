@@ -31,7 +31,7 @@ const root = document.getElementById("root");
 createRoot(root!).render(
   <MantineProvider theme={theme} defaultColorScheme="dark">
     <MDXProvider>
-      <NavigationProgress color={theme.primaryColor}/>
+      <NavigationProgress color={theme.primaryColor} />
       <PageRenderer />
       <Hmm />
     </MDXProvider>

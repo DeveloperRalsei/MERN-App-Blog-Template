@@ -16,15 +16,15 @@ const BlogList = ({
 
   const filteredBlogs = searchValue
     ? blogs.filter((blog) =>
-        [blog.title, blog.content]
-          .filter((x) => x)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchValue.toLowerCase())
-      )
+      [blog.title, blog.content, blog.tags]
+        .filter((x) => x)
+        .join(" ")
+        .toLowerCase()
+        .includes(searchValue.toLowerCase())
+    )
     : blogs;
 
-  if (blogs.length === 0) {
+  if (!blogs) {
     return <Group
       align="center"
       justify="center"
@@ -41,10 +41,12 @@ const BlogList = ({
       {filteredBlogs.map((blog, i) => (
         <BlogCard
           key={i}
-          id={blog._id}
+          _id={blog._id}
           title={blog.title}
           content={blog.content}
           image={blog.image}
+          author={blog.author}
+          tags={blog.tags}
         />
       ))}
     </SimpleGrid>
@@ -59,22 +61,28 @@ const Page: React.FC = () => {
   const theme = useMantineTheme();
   const [searchValue, setSearchValue] = useState<string>("");
   const [blogs, setBlogs] = useState<Array<Blog>>([]);
+  const [isCancelled, setIsCancelled] = useState<boolean>(false);
 
   useEffect(() => {
 
     const loadBlogs = async () => {
-      nprogress.start()
-      try {
-        const response = await blogRoutes.getBlogs()
-        setBlogs(response.data.data || [])
-        nprogress.complete()
-      } catch (error) {
-        nprogress.reset()
-        console.error(error)
+      if (!isCancelled) {
+        nprogress.start();
+        try {
+          const response = await blogRoutes.getBlogs();
+          setBlogs(response.data.data || []);
+          nprogress.complete();
+          console.log(response)
+        } catch (error) {
+          nprogress.reset();
+          console.error(error);
+        }
       }
-    }
+    };
 
-    loadBlogs()
+    loadBlogs();
+
+    return () => setIsCancelled(true)
   }, []);
 
   return (

@@ -1,4 +1,4 @@
-import { Box, Button, Card, Divider, FileInput, Image, Input, Loader, Modal, Paper, SimpleGrid, TextInput, Title } from "@mantine/core";
+import { Box, Button, Card, Divider, FileInput, Image, Input, Loader, Modal, Paper, SimpleGrid, Stack, Text, TextInput, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Blog } from "../../types";
 import blogRoutes from "../../routes/blogRoutes";
@@ -8,6 +8,7 @@ import { } from '@mantine/tiptap';
 import TextEditor from "./panelComps/TextEditor";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBook, IconNotebook } from "@tabler/icons-react";
+import { nprogress } from "@mantine/nprogress";
 
 export const Page = () => {
 
@@ -27,20 +28,23 @@ export const Page = () => {
   useEffect(() => {
 
     async function loadBlog() {
+      nprogress.start();
       try {
 
         setIsLoading(true);
         const response = await blogRoutes.getBlogById(blogId);
         const data = response.data.data[0];
         setBlog(data);
+        nprogress.complete();
 
       } catch (error) {
 
         setIsLoading(false);
         console.error(error as string);
-
+        nprogress.reset();
       } finally {
         setIsLoading(false);
+        nprogress.complete();
       }
     }
 
@@ -65,9 +69,18 @@ export const Page = () => {
       <Divider my={10} />
       <SimpleGrid cols={{ md: 2, sm: 1 }}>
         <Paper>
-          <Image src={blog?.image} alt={"blogImage-" + blog?._id} />
+          <Stack>
+            {blog.image ? (
+              <Image src={blog?.image} alt={"blogImage-" + blog?._id} />
+            ) : (
+              <Text bg={"dark"} fz={24} p={30} ta={"center"}>
+                no Image
+              </Text>
+            )}
+            <FileInput accept="image/png,image/jpeg,image/gif" mt={7} placeholder="Select a picture (jpg,png,gif)" label="Image File" />
+          </Stack>
         </Paper>
-        <Box >
+        <Stack >
 
           <TextInput
             withAsterisk
@@ -96,7 +109,7 @@ export const Page = () => {
 
             <TextEditor content={blog.content} />
           </Modal>
-        </Box>
+        </Stack>
       </SimpleGrid>
     </form>
 

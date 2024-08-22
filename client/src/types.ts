@@ -5,6 +5,8 @@ export type Blog = {
   title: string,
   content: string,
   image?: string;
+  author: string,
+  tags?: Array<string>
 };
 
 export type envoriment = {
