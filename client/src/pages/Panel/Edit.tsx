@@ -1,10 +1,9 @@
-import { Box, Button, Card, Divider, FileInput, Image, Input, Loader, Modal, Paper, SimpleGrid, Stack, Text, TextInput, Title } from "@mantine/core";
+import { Box, Button, ButtonGroup, Card, Divider, FileInput, Image, Input, Loader, Modal, Paper, SimpleGrid, Stack, TagsInput, Text, TextInput, Title, useMantineColorScheme } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Blog } from "../../types";
 import blogRoutes from "../../routes/blogRoutes";
 import { useParams } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import { } from '@mantine/tiptap';
 import TextEditor from "./panelComps/TextEditor";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBook, IconNotebook } from "@tabler/icons-react";
@@ -16,12 +15,23 @@ export const Page = () => {
   const [blog, setBlog] = useState<Blog>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [modalOpened, { close, open }] = useDisclosure();
+  const [imageRender, setImageRender] = useState<string | null>(null);
+  const [blogTags, setBlogTags] = useState<string[]>([]);
+  const { colorScheme } = useMantineColorScheme();
 
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
-      title: blog?.title || "",
-      content: blog?.content || ""
+      title: "",
+      content: "",
+      image: "",
+      tags: [],
+
+    } as {
+      title: string,
+      content: string,
+      image?: string,
+      tags: string[]
     }
   });
 
@@ -35,6 +45,8 @@ export const Page = () => {
         const response = await blogRoutes.getBlogById(blogId);
         const data = response.data.data[0];
         setBlog(data);
+        setImageRender(data.image);
+        setBlogTags(data.tags)
         nprogress.complete();
 
       } catch (error) {
@@ -54,6 +66,9 @@ export const Page = () => {
   useEffect(() => {
     if (blog) {
       form.setFieldValue("title", blog.title);
+      form.setFieldValue("content", blog.content);
+      form.setFieldValue("tags", blogTags);
+      form.setFieldValue("image", blog.image);
     }
 
   }, [blog, form]);
@@ -70,22 +85,30 @@ export const Page = () => {
       <SimpleGrid cols={{ md: 2, sm: 1 }}>
         <Paper>
           <Stack>
-            {blog.image ? (
-              <Image src={blog?.image} alt={"blogImage-" + blog?._id} />
+            {imageRender ? (
+              <Image src={imageRender} alt={blog?._id + "-MainBlogImage"} mah={300} />
             ) : (
-              <Text bg={"dark"} fz={24} p={30} ta={"center"}>
-                no Image
+              <Text bg={colorScheme === "dark" ? "dark" : "gray"} fz={24} p={30} ta={"center"}>
+                No Image
               </Text>
             )}
-            <FileInput accept="image/png,image/jpeg,image/gif" mt={7} placeholder="Select a picture (jpg,png,gif)" label="Image File" />
+            <FileInput
+              accept="image/png,image/jpeg"
+              mt={7}
+              placeholder="Select a picture (jpg,png)"
+              label="Image File"
+              onChange={e => {
+                if (e) {
+                  const imgageUrl = URL.createObjectURL(e);
+                  setImageRender(imgageUrl);
+                }
+              }} />
           </Stack>
         </Paper>
-        <Stack >
-
+        <Stack>
           <TextInput
             withAsterisk
             label="Blog Title"
-            mb={30}
             rightSection={<IconBook />}
             {...form.getInputProps("title")}
           />
@@ -104,11 +127,20 @@ export const Page = () => {
             title="Content"
             size={"xl"}
             closeOnClickOutside={false}
-            closeOnEscape={false}
           >
 
             <TextEditor content={blog.content} />
           </Modal>
+          <TagsInput
+            label="Blog Tags"
+            data={[]}
+            value={blogTags}
+            onChange={setBlogTags}
+          />
+          <ButtonGroup>
+            <Button variant={colorScheme === 'dark' ? 'light' : 'filled'} type="submit">Save</Button>
+            <Button variant="default" type="reset">Reset</Button>
+          </ButtonGroup>
         </Stack>
       </SimpleGrid>
     </form>

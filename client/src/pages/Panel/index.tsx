@@ -89,4 +89,5 @@ const Panel = () => {
 
 export { Page as Edit } from './Edit';
 export { Page as BlogList } from './Blogs';
+export { Page as NewBlog} from './New'
 export default Panel;

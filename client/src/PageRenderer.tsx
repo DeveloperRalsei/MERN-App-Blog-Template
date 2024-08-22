@@ -5,7 +5,7 @@ import { UserManagement } from './pages/UserManagement';
 import Home from './pages/Home';
 import Blogs from './pages/Blogs';
 import NotFound from './pages/NotFound';
-import Panel, { BlogList, Edit } from './pages/Panel';
+import Panel, { BlogList, Edit, NewBlog } from './pages/Panel';
 import HomePanel from './pages/Panel/HomePanel';
 
 const router = createBrowserRouter([
@@ -24,6 +24,10 @@ const router = createBrowserRouter([
          {
             path: "blogs/:blogId",
             element: <Edit/>
+         },
+         {
+            path: "newBlog",
+            element: <NewBlog/>
          },
          {
             path: "*",
