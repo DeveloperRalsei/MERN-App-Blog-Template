@@ -1,4 +1,12 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
+
+interface Blog extends Document {
+    title: string,
+    content: string,
+    author: string,
+    tags?: string[],
+    image?: string
+}
 
 const blogSchema: Schema = new Schema({
     title: {
@@ -23,4 +31,4 @@ const blogSchema: Schema = new Schema({
     }
 }, { timestamps: true })
 
-export default mongoose.model("Blog", blogSchema)
+export default mongoose.model<Blog>("Blog", blogSchema)

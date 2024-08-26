@@ -1,12 +1,12 @@
 import { ObjectId } from 'mongoose';
 
 export type Blog = {
-  _id: ObjectId | any,
+  _id?: ObjectId | any,
   title: string,
   content: string,
   image?: string;
   author: string,
-  tags?: Array<string>
+  tags?: string[]
 };
 
 export type envoriment = {

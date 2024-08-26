@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import TextEditor from "./panelComps/TextEditor";
 import { useDisclosure } from "@mantine/hooks";
-import { IconBook, IconNotebook } from "@tabler/icons-react";
+import { IconBook, IconImageInPicture, IconNotebook, IconPencil } from "@tabler/icons-react";
 import { nprogress } from "@mantine/nprogress";
 
 export const Page = () => {
@@ -28,11 +28,13 @@ export const Page = () => {
       content: "",
       image: "",
       tags: [],
+      author: ""
     } as {
       title: string,
       content: string,
       image?: string,
-      tags: string[];
+      tags: string[],
+      author: string
     }
   });
 
@@ -66,6 +68,7 @@ export const Page = () => {
       form.setFieldValue("title", blog.title);
       form.setFieldValue("content", blogContent);
       form.setFieldValue("tags", blogTags);
+      form.setFieldValue("author", blog.author)
       form.setFieldValue("image", blogImage as string);
     }
   }, [blog, form, blogTags, blogImage, blogContent]);
@@ -101,6 +104,7 @@ export const Page = () => {
               mt={7}
               placeholder="Select a picture (jpg,png)"
               label="Image File"
+              rightSection={<IconImageInPicture/>}
               onChange={e => {
                 if (e) {
                   const imgageUrl = URL.createObjectURL(e);
@@ -118,13 +122,19 @@ export const Page = () => {
             {...form.getInputProps("title")}
           />
 
+          <TextInput
+            withAsterisk
+            label="Author"
+            rightSection={<IconPencil />}
+            {...form.getInputProps("author")}
+          />
+
           <FileInput
             label="Content"
             onClick={() => open()}
             placeholder="Change Content"
             rightSection={<IconNotebook />}
             style={{ cursor: "pointer" }}
-            value={null}
           />
 
           <Modal

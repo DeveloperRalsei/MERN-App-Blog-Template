@@ -1,27 +1,58 @@
 import { Title, Divider, SimpleGrid, Paper, Stack, FileInput, TextInput, Modal, Image, TagsInput, ButtonGroup, Button, Text, useMantineColorScheme } from "@mantine/core";
-import { IconBook, IconNotebook } from "@tabler/icons-react";
+import { IconBook, IconImageInPicture, IconNotebook, IconPencil } from "@tabler/icons-react";
 import TextEditor from "./panelComps/TextEditor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
+import { useForm } from "@mantine/form";
+import { Blog } from "../../types";
 
 export const Page = () => {
-  const {colorScheme} = useMantineColorScheme()
-  const [imageRender, setImageRender] = useState<string>("")
-  const [modalOpened, {open, close}] = useDisclosure()
-  const [blogTags, setBlogTags] = useState<string[]>([])
+  const { colorScheme } = useMantineColorScheme();
+  const [imageRender, setImageRender] = useState<string>("");
+  const [modalOpened, { open, close }] = useDisclosure();
+  const [blog, setBlog] = useState<Blog>({
+    title: "",
+    content: "",
+    author: ""
+  });
+  const [blogTags, setBlogTags] = useState<string[]>([]);
+
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      title: "",
+      content: "",
+      tags: [],
+      author: "",
+      image: ""
+    } as Blog
+  });
+
+  useEffect(() => {
+    form.setValues({
+      title: blog.title,
+      author: blog.author,
+      content: blog.content,
+      tags: blogTags,
+      image: blog.image
+    });
+  }, [blog.author, blog.title, blogTags, blog.image, blog.content]);
 
   const handleSaveContent = (content: string) => {
-    console.log(content)
-  }
+    setBlog({ title: blog.title, author: blog.author, content });
+    form.setFieldValue("content", blog.content, {
+      forceUpdate: true
+    });
+  };
 
   const handleReset = () => {
-    
-  }
+
+  };
 
   return (
 
-    <form 
-      
+    <form
+      onSubmit={form.onSubmit(e => console.log(e))}
     >
       <Title order={3}>
         New Blog
@@ -31,7 +62,7 @@ export const Page = () => {
         <Paper>
           <Stack>
             {imageRender ? (
-              <Image src={imageRender} alt={imageRender + "-MainBlogImage"} mah={300} />
+              <Image radius={"sm"} src={imageRender} alt={imageRender + "-MainBlogImage"} mah={300} />
             ) : (
               <Text bg={colorScheme === "dark" ? "dark" : "gray"} fz={24} p={30} ta={"center"}>
                 No Image
@@ -41,14 +72,39 @@ export const Page = () => {
               accept="image/png,image/jpeg"
               mt={7}
               placeholder="Select a picture (jpg,png)"
-              label="Image File" />
+              label="Image File"
+              rightSection={<IconImageInPicture/>}
+              onChange={e => {
+                if (e) {
+                  const imageURL = URL.createObjectURL(e);
+                  setImageRender(imageURL);
+                }
+              }}
+            />
           </Stack>
         </Paper>
         <Stack>
           <TextInput
-            withAsterisk
+            required
             label="Blog Title"
             rightSection={<IconBook />}
+            value={blog.title}
+            onChange={(e)=> setBlog({
+              title: e.currentTarget.value,
+              content: blog.content,
+              author: blog.author
+            })}
+          />
+
+          <TextInput
+            required
+            label="Author"
+            rightSection={<IconPencil />}
+            onChange={(e)=> setBlog({
+              title: blog.title,
+              content: blog.content,
+              author: e.currentTarget.value
+            })}
           />
 
           <FileInput
@@ -68,7 +124,7 @@ export const Page = () => {
             closeOnClickOutside={false}
           >
 
-            <TextEditor onSave={handleSaveContent} onReset={handleReset}/>
+            <TextEditor content={blog.content} onSave={handleSaveContent} onReset={handleReset} />
           </Modal>
           <TagsInput
             label="Blog Tags"
@@ -84,5 +140,5 @@ export const Page = () => {
       </SimpleGrid>
     </form>
 
-  )
-}
+  );
+};

@@ -40,7 +40,7 @@ const BlogList = ({
     >
       <Table.Th>{i + 1}</Table.Th>
       <Table.Td>{blog.title}</Table.Td>
-      <Table.Td>{ }</Table.Td>
+      <Table.Td>{blog.author}</Table.Td>
       <Table.Td>
         <ActionIcon
           variant={theme.colorScheme === 'dark' ? 'light' : 'filled'}
@@ -92,7 +92,7 @@ export const Page = () => {
         <Table.Thead>
           <Table.Th w={1}>#</Table.Th>
           <Table.Th w={"40%"}>Blog Title</Table.Th>
-          <Table.Th w={"40%"}>Statics</Table.Th>
+          <Table.Th w={"40%"}>Write By</Table.Th>
           <Table.Th w={0}>Edit</Table.Th>
         </Table.Thead>
         <Table.Tbody>

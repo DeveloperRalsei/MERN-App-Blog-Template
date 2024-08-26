@@ -6,6 +6,7 @@ import '@mantine/nprogress/styles.css';
 import PageRenderer from './PageRenderer';
 import { NavigationProgress } from "@mantine/nprogress";
 import { MDXProvider } from "@mdx-js/react";
+import './style.css'
 import Hmm from "./components/Hmm";
 
 const theme = createTheme({

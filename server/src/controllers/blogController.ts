@@ -112,8 +112,8 @@ export const blogControllers = {
             id: ObjectId | string,
             title: string,
             content: string;
-            author: string,
-            tags: string[];
+            author?: string,
+            tags?: string[];
         } = req.body;
 
         function defaultRes(i: string) {
@@ -130,12 +130,11 @@ export const blogControllers = {
         if (!id) return easyRes(req, res, 500, defaultRes("id"));
         if (!title) return easyRes(req, res, 500, defaultRes("title"));
         if (!content) return easyRes(req, res, 500, defaultRes("content"));
-        if (!author) return easyRes(req, res, 500, defaultRes("author"));
 
         try {
             const blog = await blogModel.findByIdAndUpdate(
                 id,
-                { $set: { title: title, content: content, author: author, tags: tags } },
+                { $set: { title, content, author, tags } },
                 { new: true, runValidators: true }
             );
 

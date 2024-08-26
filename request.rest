@@ -34,10 +34,11 @@ PATCH http://localhost:3000/api/blogs
 Content-Type: application/json
 
 {
-    "id": "66b34f5f3c9ce529a33ad240",
+    "id": "66c7365a744c5419d5c3534a",
     "title": "Yippii",
     "content": "new Content",
-    "author": "Mehmet"
+    "image": "test",
+    "tags" : ["test","naber"]
 }
 
 ### delete Blog by Id
