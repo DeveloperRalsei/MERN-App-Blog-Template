@@ -13,6 +13,10 @@ export const Page = () => {
   const [imageRender, setImageRender] = useState<string>("");
   const [blogImage, setBlogImage] = useState<File | undefined>(undefined)
   const [modalOpened, { open, close }] = useDisclosure();
+  const [alert, setAlert] = useState<{
+    message?: string,
+    type: 'successful' | 'error'
+  }>()
   const [blog, setBlog] = useState<Blog>({
     title: "",
     content: "",
@@ -43,9 +47,7 @@ export const Page = () => {
 
   const handleSaveContent = (content: string) => {
     setBlog({ title: blog.title, author: blog.author, content });
-    form.setFieldValue("content", blog.content, {
-      forceUpdate: true
-    });
+    form.setFieldValue("content", blog.content);
   };
 
   const handleReset = () => {
@@ -56,16 +58,31 @@ export const Page = () => {
     nprogress.start()
     const formData = new FormData()
 
+    formData.append("title", values.title)
+    formData.append("content", values.content)
+    formData.append("author", values.author)
+    values.tags?.map((tag) => {
+      formData.append("tags", tag)
+    })
+
     blogImage && formData.append("blogImage", blogImage.name)
 
     if(blog.content === "") {
-      nprogress.reset()
+      nprogress.cleanup()
+      setAlert({
+        message: "Content field is required",
+        type: "error"
+      })
       return
     }
 
     try {
-      const response = await blogRoutes.newBlog(values)
-      console.log(response)
+      const response = await blogRoutes.newBlog(formData)
+      console.log(response.data)
+      setAlert({
+        message: "Successfuly created a new blog",
+        type: 'successful'
+      })
       nprogress.complete()
     } catch (error) {
       console.error(error)
@@ -82,9 +99,8 @@ export const Page = () => {
       <Title order={3}>
         New Blog
       </Title>
-      <Alert>
-        fuck
-      </Alert>
+      {alert?.type === 'successful' && <Alert color="green">{alert.message}</Alert>}
+      {alert?.type === 'error' && <Alert color="red">{alert.message}</Alert>}
       <Divider my={10} />
       <SimpleGrid cols={{ md: 2, sm: 1 }}>
         <Paper>
@@ -115,7 +131,7 @@ export const Page = () => {
         <Stack>
           <TextInput
             required
-            placeholder="Blog Title*"
+            placeholder="Blog Title"
             rightSection={<IconBook />}
             value={blog.title}
             onChange={(e)=> setBlog({
@@ -127,7 +143,7 @@ export const Page = () => {
 
           <TextInput
             required
-            placeholder=""
+            placeholder="Blog Author"
             rightSection={<IconPencil />}
             onChange={(e)=> setBlog({
               title: blog.title,

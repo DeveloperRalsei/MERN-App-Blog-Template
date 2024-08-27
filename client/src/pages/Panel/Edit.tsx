@@ -46,7 +46,7 @@ export const Page = () => {
         const response = await blogRoutes.getBlogById(blogId);
         const data = response.data.data[0];
         setBlog(data);
-        setImageRender(data.image);
+        setBlogImage(data.image)
         setBlogTags(data.tags);
         setBlogContent(data.content);
         nprogress.complete();
@@ -69,7 +69,7 @@ export const Page = () => {
       form.setFieldValue("content", blogContent);
       form.setFieldValue("tags", blogTags);
       form.setFieldValue("author", blog.author);
-      form.setFieldValue("image", blogImage as string);
+      form.setFieldValue("image", blog.image);
     }
   }, [blog, form, blogTags, blogImage, blogContent]);
 

@@ -36,9 +36,13 @@ const getBlogById = async (blogId: ObjectId | any) => {
   }
 };
 
-const newBlog = async (data: Blog) => {
+const newBlog = async (data: FormData) => {
   try {
-    const response = await axios.post(`${baseUrl}/api/blogs`, data);
+    const response = await axios.post(`${baseUrl}/api/blogs`,data, {
+      headers: {
+        'Content-Type': "multipart/form-data"
+      }
+    });
     return response;
   } catch (error) {
     console.error(error);
