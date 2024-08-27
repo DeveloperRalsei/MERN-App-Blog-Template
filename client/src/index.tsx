@@ -6,8 +6,9 @@ import '@mantine/nprogress/styles.css';
 import PageRenderer from './PageRenderer';
 import { NavigationProgress } from "@mantine/nprogress";
 import { MDXProvider } from "@mdx-js/react";
-import './style.css'
+import './style.css';
 import Hmm from "./components/Hmm";
+import { ModalsProvider } from "@mantine/modals";
 
 const theme = createTheme({
   primaryColor: "pink",
@@ -31,10 +32,12 @@ const root = document.getElementById("root");
 
 createRoot(root!).render(
   <MantineProvider theme={theme} defaultColorScheme="dark">
-    <MDXProvider>
-      <NavigationProgress color={theme.primaryColor} />
-      <PageRenderer />
-      <Hmm />
-    </MDXProvider>
+    <ModalsProvider>
+      <MDXProvider>
+        <NavigationProgress color={theme.primaryColor} />
+        <PageRenderer />
+        <Hmm />
+      </MDXProvider>
+    </ModalsProvider>
   </MantineProvider>
 );

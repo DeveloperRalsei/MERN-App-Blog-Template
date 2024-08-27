@@ -65,6 +65,7 @@ export const blogControllers = {
                 success: false,
                 data: []
             });
+            
         }
 
     },
@@ -73,11 +74,10 @@ export const blogControllers = {
             title: string,
             content: string,
             author: string,
-            tags: string[];
+            tags?: string[];
         } = req.body;
 
         const image = req.file;
-
 
         if (!title || !author || !content) {
             res.status(400).json({
@@ -105,6 +105,7 @@ export const blogControllers = {
             easyRes(req, res, 201, resInfo);
 
         } catch (error) {
+            console.error(error as string)
             res.status(404).json({
                 message: "Couldn't create new Blog: " + error,
                 success: false

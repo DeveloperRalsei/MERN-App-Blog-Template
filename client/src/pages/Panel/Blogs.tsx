@@ -92,7 +92,7 @@ export const Page = () => {
         <Table.Thead>
           <Table.Th w={1}>#</Table.Th>
           <Table.Th w={"40%"}>Blog Title</Table.Th>
-          <Table.Th w={"40%"}>Write By</Table.Th>
+          <Table.Th w={"40%"}>Wrote By</Table.Th>
           <Table.Th w={0}>Edit</Table.Th>
         </Table.Thead>
         <Table.Tbody>

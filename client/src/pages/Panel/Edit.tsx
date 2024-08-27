@@ -82,12 +82,13 @@ export const Page = () => {
   };
 
   const handleSubmit = (e: Blog) => {
-    console.log(e)
+    console.log(e);
+    const Image = new FormData()
   };
 
   if (isLoading || !blog) return <Loader />;
 
-  
+
 
   return (
     <form onSubmit={form.onSubmit(v => handleSubmit(v))}>

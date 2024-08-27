@@ -1,15 +1,17 @@
-import { Title, Divider, SimpleGrid, Paper, Stack, FileInput, TextInput, Modal, Image, TagsInput, ButtonGroup, Button, Text, useMantineColorScheme } from "@mantine/core";
+import { Title, Divider, SimpleGrid, Paper, Stack, FileInput, TextInput, Modal, Image, TagsInput, ButtonGroup, Button, Text, useMantineColorScheme, Alert } from "@mantine/core";
 import { IconBook, IconImageInPicture, IconNotebook, IconPencil } from "@tabler/icons-react";
 import TextEditor from "./panelComps/TextEditor";
 import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { Blog } from "../../types";
-import blogRoutes, { baseUrl } from "../../routes/blogRoutes";
+import blogRoutes from "../../routes/blogRoutes";
+import { nprogress } from "@mantine/nprogress";
 
 export const Page = () => {
   const { colorScheme } = useMantineColorScheme();
   const [imageRender, setImageRender] = useState<string>("");
+  const [blogImage, setBlogImage] = useState<File | undefined>(undefined)
   const [modalOpened, { open, close }] = useDisclosure();
   const [blog, setBlog] = useState<Blog>({
     title: "",
@@ -51,11 +53,24 @@ export const Page = () => {
   };
 
   const handleSubmit = async (values: Blog) => {
+    nprogress.start()
     const formData = new FormData()
 
-    imageRender && formData.append("image", imageRender)
+    blogImage && formData.append("blogImage", blogImage.name)
 
-    console.log(formData)
+    if(blog.content === "") {
+      nprogress.reset()
+      return
+    }
+
+    try {
+      const response = await blogRoutes.newBlog(values)
+      console.log(response)
+      nprogress.complete()
+    } catch (error) {
+      console.error(error)
+      nprogress.cleanup()
+    }
 
   }
 
@@ -67,6 +82,9 @@ export const Page = () => {
       <Title order={3}>
         New Blog
       </Title>
+      <Alert>
+        fuck
+      </Alert>
       <Divider my={10} />
       <SimpleGrid cols={{ md: 2, sm: 1 }}>
         <Paper>
@@ -88,6 +106,7 @@ export const Page = () => {
                 if (e) {
                   const imageURL = URL.createObjectURL(e);
                   setImageRender(imageURL);
+                  setBlogImage(e)
                 }
               }}
             />
@@ -96,7 +115,7 @@ export const Page = () => {
         <Stack>
           <TextInput
             required
-            label="Blog Title"
+            placeholder="Blog Title*"
             rightSection={<IconBook />}
             value={blog.title}
             onChange={(e)=> setBlog({
@@ -108,7 +127,7 @@ export const Page = () => {
 
           <TextInput
             required
-            label="Author"
+            placeholder=""
             rightSection={<IconPencil />}
             onChange={(e)=> setBlog({
               title: blog.title,
@@ -118,9 +137,9 @@ export const Page = () => {
           />
 
           <FileInput
-            label="Content"
+            withAsterisk
             onClick={() => open()}
-            placeholder="Change Content"
+            placeholder="Content"
             rightSection={<IconNotebook />}
             style={{ cursor: "pointer" }}
 
@@ -137,7 +156,7 @@ export const Page = () => {
             <TextEditor content={blog.content} onSave={handleSaveContent} onReset={handleReset} />
           </Modal>
           <TagsInput
-            label="Blog Tags"
+            placeholder="Blog Tags"
             data={[]}
             value={blogTags}
             onChange={setBlogTags}

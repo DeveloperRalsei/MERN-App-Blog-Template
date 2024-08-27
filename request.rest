@@ -13,11 +13,7 @@ Content-Type: application/json
 
 {
     "title": "First Blog",
-    "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus quae fugit est sint quia cupiditate? Dolor asperiores cum quae, incidunt sunt, dolorum cupiditate alias odio magni quis, accusamus unde consequuntur!asfdasdffas
-
-
-
-asfdasdf",
+    "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus quae fugit est sint quia cupiditate? Dolor asperiores cum quae, incidunt sunt, dolorum cupiditate alias odio magni quis, accusamus unde consequuntur!asfdasdffasasfdasdf",
     "author": "deneme"
 }
 

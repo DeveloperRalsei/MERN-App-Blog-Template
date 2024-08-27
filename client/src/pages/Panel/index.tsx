@@ -1,6 +1,7 @@
 import { Anchor, AppShell, Box, Burger, Button, Container, Divider, Group, NavLink, Text, Title, useMantineTheme } from "@mantine/core";
 import { useDisclosure, useFullscreen } from "@mantine/hooks";
-import { IconBook, IconBookFilled, IconDeviceDesktop, IconExternalLink, IconHome, IconWebhook } from "@tabler/icons-react";
+import { openConfirmModal } from '@mantine/modals';
+import { IconAlertTriangleFilled, IconBook, IconBookFilled, IconDeviceDesktop, IconExternalLink, IconHome, IconWebhook } from "@tabler/icons-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import ToggleColorScheme from "../../components/ToggleColorScheme";
 import { HeaderButton } from "../../components/HeaderButton";
@@ -9,11 +10,11 @@ const Panel = () => {
   const [opened, { toggle }] = useDisclosure();
   const fullscreen = useFullscreen();
   const navigate = useNavigate();
-  const theme = useMantineTheme()
+  const theme = useMantineTheme();
 
   const handleNavigate = (link: string) => {
     navigate(link);
-    toggle()
+    toggle();
   };
 
   return (
@@ -58,10 +59,26 @@ const Panel = () => {
           leftSection={<IconBook />}
           onClick={() => handleNavigate('blogs')}
         />
-        <NavLink 
+        <NavLink
           label={"Create New Blog"}
-          leftSection={<IconBookFilled/>}
+          leftSection={<IconBookFilled />}
           onClick={() => handleNavigate('newBlog')}
+        />
+        <NavLink
+          label={"Delete All!"}
+          leftSection={<IconAlertTriangleFilled />}
+          onClick={() => openConfirmModal({
+            children: <Text>
+              This action gonna delete all blogs permanantly
+            </Text>,
+            title: <Group>
+              <IconAlertTriangleFilled />
+              <strong>Warning!!</strong>
+            </Group>,
+            labels: { confirm: "Confirm", cancel: "Cancel" },
+            size: "sm",
+            onConfirm: () => handleNavigate("deleteAll")
+          })}
         />
       </AppShell.Navbar>
 
@@ -78,10 +95,11 @@ const Panel = () => {
           <div></div>
           <Box>
             Made by <Anchor href="https://developerRalsei.github.io/" target="_blank">
-            Developer Ralsei
-          </Anchor>
+              Developer Ralsei
+            </Anchor>
           </Box>
         </Group>
+
       </AppShell.Footer>
     </AppShell>
   );
@@ -89,5 +107,6 @@ const Panel = () => {
 
 export { Page as Edit } from './Edit';
 export { Page as BlogList } from './Blogs';
-export { Page as NewBlog} from './New'
+export { Page as NewBlog } from './New';
+export { Page as DeleteAllPage } from './deleteAll';
 export default Panel;
