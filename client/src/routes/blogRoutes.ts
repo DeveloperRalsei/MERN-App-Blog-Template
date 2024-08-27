@@ -1,7 +1,8 @@
 import axios from "axios";
 import { env } from "../env";
 import { ObjectId } from "mongoose";
-const baseUrl: string = env.dev_env === 'development' ? 'http://localhost:3000' : ''; 
+import { Blog } from "../types";
+export const baseUrl: string = env.dev_env === 'development' ? 'http://localhost:3000' : ''; 
 
 const getBlogs = async () => {
   try {
@@ -35,7 +36,24 @@ const getBlogById = async (blogId: ObjectId | any) => {
   }
 }
 
+const newBlog = async (data: Blog | any) => {
+  try {
+    const response = await axios.post(`${baseUrl}/api/blogs`,data)
+    return response
+  } catch (error) {
+    console.error(error)
+    return {
+      data: [],
+      status: 500,
+      statusText: "Internal Server Error",
+      header: {},
+      config: {}
+    }
+  }
+}
+
 export default {
   getBlogs,
-  getBlogById
+  getBlogById,
+  newBlog
 };

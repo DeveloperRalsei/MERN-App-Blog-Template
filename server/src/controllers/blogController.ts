@@ -75,11 +75,13 @@ export const blogControllers = {
             author: string,
             tags: string[];
         } = req.body;
+
         const image = req.file;
 
-        if (!req.body) {
-            res.status(500).json({
-                message: "All variables should be filled: " + req.body,
+
+        if (!title || !author || !content) {
+            res.status(400).json({
+                message: "Title, author and content required: " + JSON.stringify(req.body),
                 success: false,
                 data: []
             });
@@ -87,7 +89,9 @@ export const blogControllers = {
         }
 
         try {
-            const data = await blogModel.create({ title, content, image, author, tags });
+            const imagePath = image ? `/images/${image?.filename}` : undefined
+
+            const data = await blogModel.create({ title, content, image: imagePath, author, tags });
 
             let resInfo: blogRes = {
                 message: {

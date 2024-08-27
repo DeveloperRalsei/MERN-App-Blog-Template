@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { Blog } from "../../types";
+import blogRoutes, { baseUrl } from "../../routes/blogRoutes";
 
 export const Page = () => {
   const { colorScheme } = useMantineColorScheme();
@@ -49,10 +50,19 @@ export const Page = () => {
 
   };
 
+  const handleSubmit = async (values: Blog) => {
+    const formData = new FormData()
+
+    imageRender && formData.append("image", imageRender)
+
+    console.log(formData)
+
+  }
+
   return (
 
     <form
-      onSubmit={form.onSubmit(e => console.log(e))}
+      onSubmit={form.onSubmit(v => handleSubmit(v))}
     >
       <Title order={3}>
         New Blog

@@ -34,7 +34,7 @@ export const Page = () => {
       content: string,
       image?: string,
       tags: string[],
-      author: string
+      author: string;
     }
   });
 
@@ -68,7 +68,7 @@ export const Page = () => {
       form.setFieldValue("title", blog.title);
       form.setFieldValue("content", blogContent);
       form.setFieldValue("tags", blogTags);
-      form.setFieldValue("author", blog.author)
+      form.setFieldValue("author", blog.author);
       form.setFieldValue("image", blogImage as string);
     }
   }, [blog, form, blogTags, blogImage, blogContent]);
@@ -78,13 +78,19 @@ export const Page = () => {
   };
 
   const handleResetContent = () => {
-    form.setFieldValue("content", blog?.content || "")
+    form.setFieldValue("content", blog?.content || "");
+  };
+
+  const handleSubmit = (e: Blog) => {
+    console.log(e)
   };
 
   if (isLoading || !blog) return <Loader />;
 
+  
+
   return (
-    <form onSubmit={form.onSubmit(values => console.log(values))}>
+    <form onSubmit={form.onSubmit(v => handleSubmit(v))}>
       <Title order={3}>
         Editing {'"' + blog?.title + '"'}
       </Title>
@@ -104,7 +110,7 @@ export const Page = () => {
               mt={7}
               placeholder="Select a picture (jpg,png)"
               label="Image File"
-              rightSection={<IconImageInPicture/>}
+              rightSection={<IconImageInPicture />}
               onChange={e => {
                 if (e) {
                   const imgageUrl = URL.createObjectURL(e);
@@ -116,14 +122,14 @@ export const Page = () => {
         </Paper>
         <Stack>
           <TextInput
-            withAsterisk
+            required
             label="Blog Title"
             rightSection={<IconBook />}
             {...form.getInputProps("title")}
           />
 
           <TextInput
-            withAsterisk
+            required
             label="Author"
             rightSection={<IconPencil />}
             {...form.getInputProps("author")}
